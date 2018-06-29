@@ -2,7 +2,7 @@ import * as Type from '../constants/ActionType.js';
 import { fetchJson } from 'src/utils/fetch.js';
 // import { PRODUCT } from 'src/utils/api';
 
-export function demo (params) {
+export function getUserList (params) {
     return dispatch => {
         // dispatch({
         //     payload: {a: 2, b: 3},
@@ -19,13 +19,13 @@ export function demo (params) {
                 //     return false;
                 // }
                 dispatch({
-                    type: Type.DEMO,
+                    type: Type.GET_USER_LIST,
                     payload: res.result
                 })
             },
             type: 'GET',
-            url: '/api/account_list_by_pair',
-            data: {pair_id: params.id}
+            url: '/api/v1/project/user/list',
+            data: {token: window.sessionStorage.getItem('token')}
         })
     }
 }

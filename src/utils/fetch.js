@@ -11,15 +11,15 @@ export const fetchJson = (options) => {
         credentials: 'include',
             headers: options.headers || {
             'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Content-Type': 'application/json',
         },
      
     };
     if(['POST','PUT'].indexOf(opts.method.toUpperCase()) >= 0){
-        let params = Object.keys(data).map(function (key) {
-            return encodeURIComponent(key) + "=" + encodeURIComponent(data[key]);
-        }).join("&");
-        opts.body = params;
+        // let params = Object.keys(data).map(function (key) {
+        //     return encodeURIComponent(key) + "=" + encodeURIComponent(data[key]);
+        // }).join("&");
+        opts.body =  JSON.stringify(data);
     }
     var newUrl = url;
     if(opts.method.toUpperCase() == 'GET' && data){
@@ -29,7 +29,6 @@ export const fetchJson = (options) => {
         }).join("&");
         newUrl+=params;
     }
-
     fetch(newUrl, opts)
         .then(resData => toJson(resData, opts))
         .catch(error => errorHandler(error,opts))
