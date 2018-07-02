@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 import * as React from 'react';
 import { Table, Icon, Divider } from 'antd';
 import * as projectsListActions from 'src/actions/projectsListActions.js';
+import { op_project } from 'src/constants/project_struct.js'
 
 const columns = [{
-  title: 'Name',
+  title: op_project['name'].display,
   dataIndex: 'name',
   key: 'name',
   render: text => <a href="javascript:;">{text}</a>,
@@ -74,15 +75,15 @@ class PageIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
     };
   }
-  componentDidMount(){
+  componentDidMount() {
     this.props.actions.getProjectsList();
   }
 
 
-  
+
   render() {
     const data = this.props.data;
     data.forEach((e, i) => {
@@ -91,19 +92,19 @@ class PageIn extends React.Component {
     console.log(data);
     return (
       <div className="page-in">
-      123
+        123
         <Table columns={columns} dataSource={data} />
       </div>
     );
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     ...state.listReducer
   }
 }
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(projectsListActions, dispatch)
   }

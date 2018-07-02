@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Table, Icon, Divider, Button, Row, Col } from 'antd';
 import * as projectsListActions from 'src/actions/projectsListActions.js';
 import { deleteProjectServiece } from './service';
-
+import { op_project } from 'src/constants/project_struct.js'
 
 
 // const data = [{
@@ -34,36 +34,36 @@ class PageIn extends React.Component {
   }
 
   columns = [{
-    title: 'Name',
+    title: op_project['name'].display,
     dataIndex: 'name',
     key: 'name',
     render: text => <a href="javascript:;">{text}</a>,
   }, {
-    title: 'created_at',
+    title: op_project['created_at'].display,
     dataIndex: 'created_at',
     key: 'created_at',
   }, {
-    title: 'token_name',
+    title: op_project['token_name'].display,
     dataIndex: 'token_name',
     key: 'token_name',
   }, {
-    title: 'status',
+    title:  op_project['status'].display,
     dataIndex: 'status',
     key: 'status',
   }, {
-    title: 'current_base_token_count',
+    title: op_project['current_base_token_count'].display,
     dataIndex: 'current_base_token_count',
     key: 'current_base_token_count',
   }, {
-    title: 'current_user_count',
+    title: op_project['current_user_count'].display,
     dataIndex: 'current_user_count',
     key: 'current_user_count',
   }, {
-    title: 'start_at',
+    title: op_project['start_at'].display,
     dataIndex: 'start_at',
     key: 'start_at',
   }, {
-    title: 'end_at',
+    title: op_project['end_at'].display,
     dataIndex: 'end_at',
     key: 'end_at',
   }, {
