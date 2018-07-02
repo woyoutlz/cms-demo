@@ -7,24 +7,6 @@ import * as projectsListActions from 'src/actions/projectsListActions.js';
 import { deleteProjectServiece } from './service';
 import { op_project } from 'src/constants/project_struct.js'
 
-
-// const data = [{
-//   key: '1',
-//   name: 'John Brown',
-//   age: 32,
-//   address: 'New York No. 1 Lake Park',
-// }, {
-//   key: '2',
-//   name: 'Jim Green',
-//   age: 42,
-//   address: 'London No. 1 Lake Park',
-// }, {
-//   key: '3',
-//   name: 'Joe Black',
-//   age: 32,
-//   address: 'Sidney No. 1 Lake Park',
-// }];
-
 class PageIn extends React.Component {
   constructor(props) {
     super(props);
@@ -73,7 +55,6 @@ class PageIn extends React.Component {
       <span>
         <Link to={`/projects/edit/${record.id}`}>Edit</Link>
         <Divider type="vertical" />
-        <a href="javascript:;" onClick={this.deleteProject.bind(this,record.id)}>Delete</a>
         <Divider type="vertical" />
         <Link to={`/projects/editusers/${record.id}`}>Users</Link>
       </span>
@@ -87,9 +68,7 @@ class PageIn extends React.Component {
     this.props.history.push('/projects/add')
   }
   deleteProject = (id) => {
-    if (window.confirm('确认删除吗?')){
-      deleteProjectServiece({id})
-    }
+    deleteProjectServiece({id})
   }
   
   render() {
@@ -109,20 +88,6 @@ class PageIn extends React.Component {
       </div>
     );
   }
-
-  // render() {
-  //   return (
-  //     <Table
-  //       columns={columns}
-  //       dataSource={this.state.data}
-  //       components={this.components}
-  //       onRow={(record, index) => ({
-  //         index,
-  //         moveRow: this.moveRow,
-  //       })}
-  //     />
-  //   );
-  // }
 }
 
 function mapStateToProps (state) {

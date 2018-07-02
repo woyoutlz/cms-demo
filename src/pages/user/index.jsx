@@ -9,6 +9,7 @@ import bundle from '../../Bundle';
 
 const { Header, Content, Footer, Sider } = Layout;
 const Deomo = bundle(() => import('../PageIn/index'));
+const Permission = bundle(() => import('../Permission/index'));
 const Edit = bundle(() => import('../Edit/index'));
 const EditUsers = bundle(() => import('../EditUsers/index'));
 const DragTable = bundle(() => import('../DragTable'));
@@ -37,6 +38,9 @@ class PageIn extends React.Component {
               <Menu.Item key="/projects">
                 <Link to="/projects">Home</Link>
               </Menu.Item>
+              <Menu.Item key="/permission">
+                <Link to="/projects/permission">permission</Link>
+              </Menu.Item>
               {/* <Menu.Item key="/projects/projects">
                 <Link to="/projects/projects">Projects</Link>
               </Menu.Item>
@@ -49,6 +53,7 @@ class PageIn extends React.Component {
             <Content style={{ margin: '16px' }}>
               <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
                 <Route exact={true} path="/projects" component={Deomo} />
+                <Route exact={true} path="/projects/permission" component={Permission} />
                 <Route exact={true} path="/projects/edit/:id" component={Edit} />
                 <Route exact={true} path="/projects/editusers/:id" component={EditUsers} />
                 <Route exact={true} path="/projects/projects" component={DragTable} />

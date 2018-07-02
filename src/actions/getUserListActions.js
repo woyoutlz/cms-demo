@@ -2,7 +2,8 @@ import * as Type from '../constants/ActionType.js';
 import { fetchJson } from 'src/utils/fetch.js';
 // import { PRODUCT } from 'src/utils/api';
 
-export function getUserList (params) {
+export function getUserList(params) {
+    console.log(1, params)
     return dispatch => {
         // dispatch({
         //     payload: {a: 2, b: 3},
@@ -12,6 +13,11 @@ export function getUserList (params) {
         //     payload: {a: 2, b: 3},
         //     type: Type.DEMO
         // })
+        let data = {
+            "query": {
+                "project_id": params.id,
+            }
+        }
         fetchJson({
             success: (res) => {
                 // if (!res || !res.length) {
@@ -23,9 +29,9 @@ export function getUserList (params) {
                     payload: res.result
                 })
             },
-            type: 'GET',
+            type: 'POST',
             url: '/api/v1/project/user/list',
-            data: {token: window.sessionStorage.getItem('token')}
+            data: { token: window.sessionStorage.getItem('token') ,data:data}
         })
     }
 }
