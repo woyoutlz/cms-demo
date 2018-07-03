@@ -1,7 +1,11 @@
 import { fetchJson } from 'src/utils/fetch.js';
 
-export const deleteProjectServiece = (data, cb) => {
+export const adminService = (url,data, cb) => {
     const callback = cb;
+    let params = {
+        token: window.sessionStorage.getItem('token')
+    }
+    Object.assign(params,data)
     fetchJson({
         success: (res) => {
             if(cb){
@@ -13,10 +17,7 @@ export const deleteProjectServiece = (data, cb) => {
             // })
         },
         type: 'POST',
-        url: '/api/v1/project/delete',
-        data: {
-            token: window.sessionStorage.getItem('token'),
-            data: {...data}
-        }
+        url: url,
+        data: params
     })
 }

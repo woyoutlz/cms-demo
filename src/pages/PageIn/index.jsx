@@ -6,7 +6,7 @@ import { Table, Icon, Divider, Button, Row, Col } from 'antd';
 import * as projectsListActions from 'src/actions/projectsListActions.js';
 import { deleteProjectServiece } from './service';
 import { op_project } from 'src/constants/project_struct.js'
-
+import ConfirmModal from './modal'
 
 // const data = [{
 //   key: '1',
@@ -71,6 +71,9 @@ class PageIn extends React.Component {
     key: 'action',
     render: (text, record) => (
       <span>
+         <ConfirmModal
+        datas={record}
+        /> 
         <Link to={`/projects/edit/${record.id}`}>Edit</Link>
         <Divider type="vertical" />
         <a href="javascript:;" onClick={this.deleteProject.bind(this,record.id)}>Delete</a>

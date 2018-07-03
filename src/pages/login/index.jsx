@@ -21,6 +21,12 @@ class NormalLoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
             console.log('Received values of form: ', values);
+                if (values.token){
+                  console.log(1,values.token)
+                  window.sessionStorage.setItem('token', values.token);
+                  console.log(this.props.history.push('/projects'))
+                  return
+                }
                 login(values.userName, values.password, (res)=>{
                     window.sessionStorage.setItem('token', res.result);
                     console.log(this.props.history.push('/projects'))
@@ -38,16 +44,23 @@ class NormalLoginForm extends React.Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
               {getFieldDecorator('userName', {
-                rules: [{ required: true, message: 'Please input your username!' }],
+                rules: [{ required: false, message: 'Please input your username!' }],
               })(
                 <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
               )}
             </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your Password!' }],
+                rules: [{ required: false, message: 'Please input your Password!' }],
               })(
                 <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+              )}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('token', {
+                rules: [{ required: false, message: 'Please input your token!' }],
+              })(
+                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="token 选填" />
               )}
             </FormItem>
             <FormItem>

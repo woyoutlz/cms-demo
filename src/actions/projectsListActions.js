@@ -33,9 +33,13 @@ export function getProjectsList (params) {
     }
 }
 export function getForm (params) {
+    if (!params.id){
+        return
+    }
     return dispatch => {
         fetchJson({
             success: (res) => {
+                console.log(2,res)
                 const data = res.result.data || [];
                 const newData = data.filter((e) => e.id == params.id);
                 dispatch({
@@ -47,7 +51,11 @@ export function getForm (params) {
             url: '/api/v1/project/list',
             data: {
                 token: window.sessionStorage.getItem('token'),
-                data: {}
+                data: {
+                    query:{
+                        id:params.id
+                    }
+                }
             }
         })
     }

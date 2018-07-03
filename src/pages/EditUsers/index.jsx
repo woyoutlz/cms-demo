@@ -6,7 +6,7 @@ import ConfirmModal from './UserEditModal';
 import * as React from 'react';
 import { Table, Icon, Divider } from 'antd';
 import * as getUserListActions from 'src/actions/getUserListActions';
-
+import { editUser } from './service'
 
 
 // const data = [{
@@ -33,8 +33,8 @@ class PageIn extends React.Component {
       showConfirmModal: false
     };
   }
-  
-  componentDidMount(){
+
+  componentDidMount() {
     this.props.actions.getUserList(this.props.match.params);
   }
   columns = [{
@@ -93,17 +93,38 @@ class PageIn extends React.Component {
       <span>
         {/* <Link to={`/projects/edit/${record.id}`}>Edit</Link>
         <Divider type="vertical" /> */}
-        <a href="javascript:;" onClick={this.editUser.bind(this,record)}>Edit_User</a>
+        {/* <a href="javascript:;" onClick={this.editUser.bind(this, record)}>Edit_User</a> */}
+        <ConfirmModal
+          // showConfirmModal={this.state.showConfirmModal}
+          record={record}
+          // confirmData={this.state.confirmData}
+          // cancelCb={()=>{this.setState({
+          //   showConfirmModal: false,
+          // })}}
+          // comfirmRecord={this.state.comfirmRecord}
+          okCb={this.sendUserData}
+        />
         {/* <Divider type="vertical" />
         <Link to={`/projects/editusers/${record.id}`}>Users</Link> */}
       </span>
     ),
   }];
-  editUser(record,e){
-    this.setState({showConfirmModal: true, record: record})
+  editUser(record, e) {
+    this.setState({ showConfirmModal: true, record: record })
   }
   sendUserData = (data) => {
-    console.log(data);
+    let self = this
+    console.log(data)
+    editUser({
+      "status": data.status,
+      "user_id": data.record.user_id,
+      "project_id": data.record.project_id,
+      "memo": data.reason
+    },res=>{
+      if(res.code==0){
+        self.props.actions.getUserList(self.props.match.params);
+      }
+    })
   }
   render() {
     const data = this.props.data;
@@ -113,26 +134,17 @@ class PageIn extends React.Component {
     return (
       <div className="page-in">
         <Table columns={this.columns} dataSource={data} />
-        <ConfirmModal 
-          showConfirmModal={this.state.showConfirmModal}
-          confirmData={this.state.confirmData}
-          // cancelCb={()=>{this.setState({
-          //   showConfirmModal: false,
-          // })}}
-          // comfirmRecord={this.state.comfirmRecord}
-          okCb={this.sendUserData}
-        />
       </div>
     );
   }
 }
 
-function mapStateToProps (state, d, cao) {
+function mapStateToProps(state, d, cao) {
   return {
     ...state.userListReducer
   }
 }
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(getUserListActions, dispatch)
   }

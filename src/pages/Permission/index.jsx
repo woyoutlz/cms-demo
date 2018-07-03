@@ -2,102 +2,90 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
-import { Table, Icon, Divider, Button, Row, Col } from 'antd';
+import { notification } from 'antd';
 import * as projectsListActions from 'src/actions/projectsListActions.js';
-import { deleteProjectServiece } from './service';
+import { adminService } from './service';
+import ConfirmModal from './modal';
 import { op_project } from 'src/constants/project_struct.js'
-
+import { controll_types } from './inputs.js'
+import _ from 'lodash'
 class PageIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
     };
   }
-
-  columns = [{
-    title: op_project['name'].display,
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a href="javascript:;">{text}</a>,
-  }, {
-    title: op_project['created_at'].display,
-    dataIndex: 'created_at',
-    key: 'created_at',
-  }, {
-    title: op_project['token_name'].display,
-    dataIndex: 'token_name',
-    key: 'token_name',
-  }, {
-    title:  op_project['status'].display,
-    dataIndex: 'status',
-    key: 'status',
-  }, {
-    title: op_project['current_base_token_count'].display,
-    dataIndex: 'current_base_token_count',
-    key: 'current_base_token_count',
-  }, {
-    title: op_project['current_user_count'].display,
-    dataIndex: 'current_user_count',
-    key: 'current_user_count',
-  }, {
-    title: op_project['start_at'].display,
-    dataIndex: 'start_at',
-    key: 'start_at',
-  }, {
-    title: op_project['end_at'].display,
-    dataIndex: 'end_at',
-    key: 'end_at',
-  }, {
-    title: 'Action',
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        <Link to={`/projects/edit/${record.id}`}>Edit</Link>
-        <Divider type="vertical" />
-        <Divider type="vertical" />
-        <Link to={`/projects/editusers/${record.id}`}>Users</Link>
-      </span>
-    ),
-  }];
-  componentDidMount(){
-    this.props.actions.getProjectsList();
+  componentDidMount() {
+    // this.props.actions.getProjectsList();
   }
 
   createProject = () => {
     this.props.history.push('/projects/add')
   }
-  deleteProject = (id) => {
-    deleteProjectServiece({id})
+
+  mapper(data) {
+    return data.map(i => {
+      controll_types[i].key = i
+      return controll_types[i]
+    }).filter(i => !!i)
   }
-  
+  modalok(url, datas, result) {
+    // console.log(datas,result)
+    let args = {}
+    for (let i of datas) {
+      let rpath = i.path.join(".")
+      _.set(args,rpath,result[i.key])
+    }
+    let self = this
+    // console.log(url,args)
+    adminService(url, args, res => {
+      console.log(res)
+      if(res.code==0){
+        self.openNotification(url,"请求成功")
+      }
+    })
+  }
+  openNotification(msg,des) {
+    notification.open({
+      message: msg,
+      description: des,
+    })
+  }
   render() {
-    const data = this.props.data;
-    data.forEach((e, i) => {
-      e.key = `project${i}`;
-    });
-    console.log(data);
     return (
       <div className="page-in">
-        <Row>
-          <Col span={3}>
-            <Button type="primary" htmlType="submit" className="login-form-button" onClick={this.createProject}>Create</Button>
-          </Col>
-        </Row>
-        <Table columns={this.columns} dataSource={data} />
+        <ConfirmModal
+          cb={this.modalok.bind(this, '/api/admin/create_account')}
+          name='创建用户'
+          datas={this.mapper(["account", "password"])}
+        />
+         <ConfirmModal
+          cb={this.modalok.bind(this, '/api/admin/permission/spe_project')}
+        name='项目权限'
+        datas={this.mapper(["pro_account","project_id","project_action"])}
+        />
+        <ConfirmModal
+          cb={this.modalok.bind(this, '/api/admin/permission/project_show')}
+        name='web端展示修改权限'
+        datas={this.mapper(["pro_account","status"])}
+        /> 
+        <ConfirmModal
+        cb={this.modalok.bind(this, '/api/v1/project/changeshow')}
+        name='web端修改'
+        datas={this.mapper(["show_projectid","show_control","show_banner","show_score"])}
+        /> 
       </div>
     );
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    ...state.listReducer
   }
 }
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(projectsListActions, dispatch)
   }
 }
 

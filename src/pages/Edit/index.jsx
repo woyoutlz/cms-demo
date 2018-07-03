@@ -6,42 +6,32 @@ import { connect } from 'react-redux';
 import * as projectsListActions from 'src/actions/projectsListActions.js';
 import { createProject, editProject } from './service';
 import { op_project } from 'src/constants/project_struct.js'
-// import { InputNumber, Checkbox } from 'antd';
+import { api_post } from 'src/utils/fetch.js';
 const FormItem = Form.Item;
-// const Option = Select.Option;
-// const AutoCompleteOption = AutoComplete.Option;
-
-// const residences = [{
-//   value: 'zhejiang',
-//   label: 'Zhejiang',
-//   children: [{
-//     value: 'hangzhou',
-//     label: 'Hangzhou',
-//     children: [{
-//       value: 'xihu',
-//       label: 'West Lake',
-//     }],
-//   }],
-// }, {
-//   value: 'jiangsu',
-//   label: 'Jiangsu',
-//   children: [{
-//     value: 'nanjing',
-//     label: 'Nanjing',
-//     children: [{
-//       value: 'zhonghuamen',
-//       label: 'Zhong Hua Men',
-//     }],
-//   }],
-// }];
 
 class RegistrationForm extends React.Component {
-  state = {
+    state = {
     confirmDirty: false,
     autoCompleteResult: [],
   };
   componentDidMount() {
-    this.props.actions.getForm(this.props.match.params)
+    if(this.props.match.params.id){
+      //edit
+      this.setState({type:"edit"})
+      let self = this
+      api_post('/api/v1/project/list',{
+        data:{
+          query:{
+            id:this.props.match.params.id
+          }
+        }
+      },true,res=>{
+        let project_obj = res.result.data[0]
+        self.setState({old_project:project_obj})
+      })
+    }else{
+      this.setState({type:"add"})
+    }
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -54,7 +44,11 @@ class RegistrationForm extends React.Component {
           values.id = this.props.match.params.id;
           delete values.status;
           delete values.recieve_address;
-          editProject(values);
+          editProject(values,res=>{
+            if (res.code == 0) {
+              this.props.history.push('/projects')
+            };
+          });
         } else {
           createProject(values, (res) => {
             console.log(res)
@@ -70,38 +64,8 @@ class RegistrationForm extends React.Component {
   cancel = () => {
     this.props.history.push(`/projects`)
   }
-  // public handleConfirmBlur = (e:any) => {
-  //   const value = e.target.value;
-  //   this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  // }
-  // public compareToFirstPassword = (rule:any, value:any, callback:any) => {
-  //   const form = this.props.form;
-  //   if (value && value !== form.getFieldValue('password')) {
-  //     callback('Two passwords that you enter is inconsistent!');
-  //   } else {
-  //     callback();
-  //   }
-  // }
-  // public validateToNextPassword = (rule:any, value:any, callback:any) => {
-  //   const form = this.props.form;
-  //   if (value && this.state.confirmDirty) {
-  //     form.validateFields(['confirm'], { force: true });
-  //   }
-  //   callback();
-  // }
-  // public handleWebsiteChange = (value:any) => {
-  //   let autoCompleteResult:any;
-  //   if (!value) {
-  //     autoCompleteResult = [];
-  //   } else {
-  //     autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-  //   }
-  //   this.setState({ autoCompleteResult });
-  // }
   componentWillReceiveProps(n) {
-    // if(n.success === 0){
-    //   this.props.history.push(`/`);
-    // }
+
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -117,19 +81,18 @@ class RegistrationForm extends React.Component {
         sm: { span: 14 },
       },
     };
-    // const tailFormItemLayout = {
-    //   wrapperCol: {
-    //     xs: {
-    //       span: 24,
-    //       offset: 0,
-    //     },
-    //     sm: {
-    //       span: 16,
-    //       offset: 8,
-    //     },
-    //   },
-    // };
-    const { tradingForm } = this.props;
+    let { tradingForm } = this.props;
+    if (!tradingForm){
+      tradingForm = {}
+    }
+    console.log(2,this.state.old_project)
+    let self = this
+    function get_project_value(name){
+      if (!self.state.old_project || !self.state.old_project[name]){
+        return name
+      }
+      return self.state.old_project[name]
+    }
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem
@@ -144,7 +107,7 @@ class RegistrationForm extends React.Component {
             // }],
             initialValue: tradingForm.name
           })(
-            <Input />
+            <Input placeholder={get_project_value('name')}/>
           )}
         </FormItem>
         <FormItem
@@ -159,7 +122,7 @@ class RegistrationForm extends React.Component {
             // }],
             initialValue: tradingForm.address_key
           })(
-            <Input />
+            <Input placeholder={get_project_value('address_key')}/>
           )}
         </FormItem>
         <FormItem
@@ -174,23 +137,183 @@ class RegistrationForm extends React.Component {
             // }],
             initialValue: tradingForm.rate
           })(
-            <Input />
+            <Input placeholder={get_project_value('rate')}/>
           )}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="adds"
+          label="add start"
         >
-          {getFieldDecorator('adds', {
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_keyword'].display}
+        >
+          {getFieldDecorator('adds_keyword', {
             rules: [{
               // type: 'number', message: 'The input is not valid number!',
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
-            initialValue: tradingForm.adds
+            initialValue: tradingForm.adds_keyword
           })(
-            <Input />
+            <Input placeholder={get_project_value('adds_keyword')}/>
           )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_advantage'].display}
+        >
+          {getFieldDecorator('adds_advantage', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_advantage
+          })(
+            <Input placeholder={get_project_value('adds_advantage')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_website'].display}
+        >
+          {getFieldDecorator('adds_website', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_website
+          })(
+             <Input placeholder={get_project_value('adds_website')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_detail'].display}
+        >
+          {getFieldDecorator('adds_detail', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_detail
+          })(
+             <Input placeholder={get_project_value('adds_detail')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_banner'].display}
+        >
+          {getFieldDecorator('adds_banner', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_banner
+          })(
+             <Input placeholder={get_project_value('adds_banner')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_logo'].display}
+        >
+          {getFieldDecorator('adds_logo', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_logo
+          })(
+             <Input placeholder={get_project_value('adds_logo')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_token_total'].display}
+        >
+          {getFieldDecorator('adds_token_total', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_token_total
+          })(
+             <Input placeholder={get_project_value('adds_token_total')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_ico_total'].display}
+        >
+          {getFieldDecorator('adds_ico_total', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_ico_total
+          })(
+             <Input placeholder={get_project_value('adds_ico_total')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_kyc_require'].display}
+        >
+          {getFieldDecorator('adds_kyc_require', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_kyc_require
+          })(
+             <Input placeholder={get_project_value('adds_kyc_require')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_erc20'].display}
+        >
+          {getFieldDecorator('adds_erc20', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_erc20
+          })(
+             <Input placeholder={get_project_value('adds_erc20')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={op_project['adds_on_market_time'].display}
+        >
+          {getFieldDecorator('adds_on_market_time', {
+            rules: [{
+              // type: 'number', message: 'The input is not valid number!',
+            }, {
+              // required: true, message: 'Please input your E-mail!',
+            }],
+            initialValue: tradingForm.adds_on_market_time
+          })(
+             <Input placeholder={get_project_value('adds_on_market_time')}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="add end"
+        >
         </FormItem>
         <FormItem
           {...formItemLayout}
@@ -204,7 +327,7 @@ class RegistrationForm extends React.Component {
             // }],
             initialValue: tradingForm.base_accuracy
           })(
-            <Input />
+             <Input placeholder={get_project_value('base_accuracy')}/>
           )}
         </FormItem>
         <FormItem
@@ -219,7 +342,7 @@ class RegistrationForm extends React.Component {
             // }],
             initialValue: tradingForm.base_max_quota
           })(
-            <Input />
+             <Input placeholder={get_project_value('base_max_quota')}/>
           )}
         </FormItem>
 
@@ -235,9 +358,7 @@ class RegistrationForm extends React.Component {
             // }],
             initialValue: tradingForm.base_min_quota
           })(
-            <Input
-            // onChange={(value:any) => `${value}%`}
-            />
+            <Input placeholder={get_project_value('base_min_quota')}/>
           )}
         </FormItem>
 
@@ -255,6 +376,7 @@ class RegistrationForm extends React.Component {
           })(
             <Input
               onChange={(value) => `${value}%`}
+              placeholder={get_project_value('base_soft_cap')}
             />
           )}
         </FormItem>
@@ -273,6 +395,7 @@ class RegistrationForm extends React.Component {
           })(
             <Input
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('base_token')}
             />
           )}
         </FormItem>
@@ -291,6 +414,7 @@ class RegistrationForm extends React.Component {
           })(
             <Input
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('base_token_count')}
             />
           )}
         </FormItem>
@@ -309,6 +433,7 @@ class RegistrationForm extends React.Component {
           })(
             <Input
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('base_token_name')}
             />
           )}
         </FormItem>
@@ -328,6 +453,7 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('close_at')}
             />
           )}
         </FormItem>
@@ -348,6 +474,7 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('control_status')}
             />
           )}
         </FormItem>
@@ -426,6 +553,7 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('end_at')}
             />
           )}
         </FormItem>
@@ -446,6 +574,7 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('finish_at')}
             />
           )}
         </FormItem>
@@ -466,6 +595,7 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('lock_time')}
             />
           )}
         </FormItem>
@@ -486,6 +616,7 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('offer_at')}
             />
           )}
         </FormItem>
@@ -526,13 +657,15 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('start_at')}
             />
           )}
         </FormItem>
 
         <FormItem
           {...formItemLayout}
-          label="status"
+          label='status'
+          extra = {get_project_value('status')}
         >
           {/* {getFieldDecorator('status', {
             // rules: [{
@@ -566,6 +699,7 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('token')}
             />
           )}
         </FormItem>
@@ -573,6 +707,7 @@ class RegistrationForm extends React.Component {
         <FormItem
           {...formItemLayout}
           label={op_project['token_count'].display}
+          extra = {get_project_value('token_count')}
         >
           {/* {getFieldDecorator('token_count', {
             // rules: [{
@@ -606,6 +741,7 @@ class RegistrationForm extends React.Component {
             <Input
             // disabled={tradingForm.need_cancel}
             // onChange={(value:any) => `${value}%`}
+            placeholder={get_project_value('token_name')}
             />
           )}
         </FormItem>
@@ -690,13 +826,13 @@ const WrappedRegistrationForm = Form.create()(RegistrationForm);
 function mapStateToProps(state) {
   return {
     // success: state.postTradingPairFormReducer.success,
-    tradingForm: state.listReducer.data[0] || {}
+    // tradingForm: state.listReducer.data[0] || {}
   }
 }
 function mapDispatchToProps(dispatch) {
   // const actions = Object.assign(productAction, policyPlanAction)
   return {
-    actions: bindActionCreators(projectsListActions, dispatch)
+    // actions: bindActionCreators(projectsListActions, dispatch)
   }
 }
 

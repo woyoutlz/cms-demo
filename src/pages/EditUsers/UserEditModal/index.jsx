@@ -13,23 +13,29 @@ class PageIn extends React.Component {
       status: null
     };
   }
-  componentDidMount(){
+  componentDidMount() {
   }
-
+  showModal() {
+    this.setState({
+      visible: true,
+      status: this.props.record.status,
+      reason: this.props.record.memo
+    });
+  }
   handleChange(value) {
     console.log(`selected ${value}`);
-    this.setState({status: value})
+    this.setState({ status: value })
   }
-  
+
   handleBlur() {
     console.log('blur');
   }
-  
+
   handleFocus() {
     console.log('focus');
   }
 
-  componentWillReceiveProps(n){
+  componentWillReceiveProps(n) {
     this.setState({
       visible: n.showConfirmModal
     })
@@ -41,13 +47,14 @@ class PageIn extends React.Component {
     // this.setState({ loading: true });
     console.log(this)
     let data = {
+      record: this.props.record,
       status: this.state.status,
       reason: this.state.reason
     }
     // setTimeout(() => {
-      this.setState({ loading: false, visible: false }, ()=>{
-        this.props.okCb(data);
-      });
+    this.setState({ loading: false, visible: false }, () => {
+      this.props.okCb(data);
+    });
     // }, 300);
   }
   getReason = (e) => {
@@ -60,48 +67,49 @@ class PageIn extends React.Component {
   render() {
     return (
       <div>
-        {/* <Button type="primary" onClick={this.showModal}>Open</Button> */}
-        
+        <a href="javascript:;" > <span type="primary" onClick={this.showModal.bind(this)}>Open</span> 
+        </a>
         <Modal
           title="Basic Modal"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-        <Row>
-        <Col span={6}>
-          <Select
-            showSearch
-            style={{ width: 200 }}
-            placeholder="Select"
-            optionFilterProp="children"
-            onChange={this.handleChange.bind(this)}
-            onFocus={this.handleFocus.bind(this)}
-            onBlur={this.handleBlur.bind(this)}
-            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          >
-            <Option value="waiting">waiting</Option>
-            <Option value="reject">reject</Option>
-            <Option value="pending">pending</Option>
-            <Option value="ok">ok</Option>
-          </Select>
-        </Col>
-        <Col span={6}>
-          <Input placeholder="Reason" onBlur={this.getReason}/>
-        </Col>
-        </Row>
+          <Row>
+            <Col span={6}>
+              <Select
+                showSearch
+                value={this.state.status}
+                style={{ width: 200 }}
+                placeholder="Select"
+                optionFilterProp="children"
+                onChange={this.handleChange.bind(this)}
+                onFocus={this.handleFocus.bind(this)}
+                onBlur={this.handleBlur.bind(this)}
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              >
+                <Option value="waiting">waiting</Option>
+                <Option value="reject">reject</Option>
+                <Option value="pending">pending</Option>
+                <Option value="ok">ok</Option>
+              </Select>
+            </Col>
+            <Col span={6}>
+              <Input defaultValue={this.state.reason} placeholder="Reason" onBlur={this.getReason} />
+            </Col>
+          </Row>
         </Modal>
       </div>
     );
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // ...state.listReducer
   }
 }
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // actions: bindActionCreators(projectsListActions, dispatch)
   }
