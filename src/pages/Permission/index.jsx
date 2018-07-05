@@ -9,7 +9,7 @@ import ConfirmModal from './modal';
 import { op_project } from 'src/constants/project_struct.js'
 import { controll_types } from './inputs.js'
 import _ from 'lodash'
-class PageIn extends React.Component {
+class Permission extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,4 +92,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PageIn)
+)(Permission)

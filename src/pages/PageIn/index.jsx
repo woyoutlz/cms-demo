@@ -112,20 +112,6 @@ class PageIn extends React.Component {
       </div>
     );
   }
-
-  // render() {
-  //   return (
-  //     <Table
-  //       columns={columns}
-  //       dataSource={this.state.data}
-  //       components={this.components}
-  //       onRow={(record, index) => ({
-  //         index,
-  //         moveRow: this.moveRow,
-  //       })}
-  //     />
-  //   );
-  // }
 }
 
 function mapStateToProps (state) {

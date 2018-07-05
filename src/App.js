@@ -26,7 +26,7 @@ class App extends React.Component{
     return (
       <ConnectedRouter history={history}>
       <div className="App">
-        <Route path="/login" exact={true} component={Login} />
+        <Route path="/" exact={true} component={Login} />
         <Route path="/projects" component={User} />
         {/* <Route exact={true} path="/home" component={Demo} />
         <Route exact={true} path="/projects" component={DragTable} /> */}

@@ -23,7 +23,12 @@ class PageIn extends React.Component {
   }
   componentDidMount() {
   }
-
+  logout(){
+    if(window.confirm("确认退出吗")){
+      window.sessionStorage.setItem("token",null)
+      this.props.history.push('/') 
+    }
+  }
   render() {
     const location = this.props.location || {};
     let pathname = location.pathname || '/user';
@@ -40,14 +45,11 @@ class PageIn extends React.Component {
               <Link to="/projects">Home</Link>
             </Menu.Item>
             <Menu.Item key="/permission">
-              <Link to="/projects/permission">permission</Link>
+              <Link to="/projects/permission" >permission</Link>
             </Menu.Item>
-            {/* <Menu.Item key="/projects/projects">
-                <Link to="/projects/projects">Projects</Link>
-              </Menu.Item>
-              <Menu.Item key="/projects/users">
-                <Link to="/projects/users">Users</Link>
-              </Menu.Item> */}
+            <Menu.Item key="/logout">
+              <a  onClick={this.logout.bind(this)}>退出</a>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout>

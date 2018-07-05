@@ -4,7 +4,7 @@ import { Modal, Button, Select, Input, Col, Row } from 'antd';
 const Option = Select.Option;
 // import * as projectsListActions from 'src/actions/projectsListActions.js';
 
-class PageIn extends React.Component {
+class PermissionModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,8 +59,8 @@ class PageIn extends React.Component {
           onCancel={this.handleCancel.bind(this)}
         >
           <Row>
-            {this.props.datas.map(x => <Col span={6} >
-              <Input defaultValue="" placeholder={x.name} onChange={this.handleInput.bind(this,x.key)}  onBlur={this.getReason} />
+            {this.props.datas.map(x => <Col span={6} key={this.props.name+x.key}>
+              <Input  defaultValue="" placeholder={x.name} onChange={this.handleInput.bind(this,x.key)}  onBlur={this.getReason} />
             </Col>)}
           </Row>
         </Modal>
@@ -83,4 +83,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PageIn)
+)(PermissionModal)
