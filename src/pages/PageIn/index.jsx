@@ -8,23 +8,6 @@ import { deleteProjectServiece } from './service';
 import { op_project } from 'src/constants/project_struct.js'
 import ConfirmModal from './modal'
 
-// const data = [{
-//   key: '1',
-//   name: 'John Brown',
-//   age: 32,
-//   address: 'New York No. 1 Lake Park',
-// }, {
-//   key: '2',
-//   name: 'Jim Green',
-//   age: 42,
-//   address: 'London No. 1 Lake Park',
-// }, {
-//   key: '3',
-//   name: 'Joe Black',
-//   age: 32,
-//   address: 'Sidney No. 1 Lake Park',
-// }];
-
 class PageIn extends React.Component {
   constructor(props) {
     super(props);
@@ -34,10 +17,14 @@ class PageIn extends React.Component {
   }
 
   columns = [{
+    title: "id",
+    dataIndex: 'id',
+    key: 'id',
+  },{
     title: op_project['name'].display,
     dataIndex: 'name',
     key: 'name',
-    render: text => <a href="javascript:;">{text}</a>,
+    render: (text,record) =>  <Link to={`/projects/edit/${record.id}`}>{text}</Link>,
   }, {
     title: op_project['created_at'].display,
     dataIndex: 'created_at',

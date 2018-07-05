@@ -38,6 +38,7 @@ class PageIn extends React.Component {
           collapsible
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
+          
         >
           <div className="logo" />
           <Menu theme="dark" selectedKeys={[pathname]} mode="inline">

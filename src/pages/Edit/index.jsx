@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button ,notification} from 'antd';
 // import * as getTradingPairFormAction from 'src/actions/getTradingPairFormAction.js'; 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -41,6 +41,10 @@ class RegistrationForm extends React.Component {
       if (!err) {
         // console.log(this.props.tradingForm)
         // values.id = this.props.tradingForm.id
+        values = _.pickBy(values,(v)=>{
+          return v && v.length > 0
+        });
+        console.log("submit",values)
         console.log(this.props.match.params.id);
         if (this.props.match.params.id) {
           values.id = this.props.match.params.id;
@@ -49,14 +53,24 @@ class RegistrationForm extends React.Component {
           editProject(values, res => {
             if (res.code == 0) {
               this.props.history.push('/projects')
-            };
+            }else{
+              notification["error"]({
+                message: 'error',
+                description: res.result,
+              });
+            }
           });
         } else {
           createProject(values, (res) => {
             console.log(res)
             if (res.code == 0) {
               this.props.history.push('/projects')
-            };
+            }else{
+              notification["error"]({
+                message: 'error',
+                description: res.result,
+              });
+            }
           });
         }
         // console.log('Received values of form: ', values);
@@ -128,7 +142,6 @@ class RegistrationForm extends React.Component {
       if (op_project[name].op) {
         if (self.state.old_project) {
           //edit
-          console.log('edit', name)
           if (op_project[name].op.indexOf('U') === -1) {
             readonly = true
           }
@@ -141,16 +154,23 @@ class RegistrationForm extends React.Component {
         // op_project[name].op.in
       }
       let rules = []
-      if (op_project[name].op_required) {
+      if (op_project[name].op_required && !self.state.old_project) {
         let required_msg = op_project[name].display + '必填'
         rules.push({
           required: true, message: required_msg
+        })
+      }else{
+        rules.push({
+          required: false
         })
       }
       if (op_project[name].type && op_project[name].type === "number") {
         let type_msg = op_project[name].display + '是数字'
         rules.push({
           type: 'number', message: type_msg, transform(value) {
+            if (!value){
+              value = 1
+            }
             return Number(value);
           }
         })
@@ -172,7 +192,7 @@ class RegistrationForm extends React.Component {
         })
       }
       if (readonly){
-        return <lable>{get_project_value(name)}</lable>
+        return <span>{get_project_value(name)}</span>
       }else{
         return getFieldDecorator(name, {
           rules: rules,
@@ -209,7 +229,6 @@ class RegistrationForm extends React.Component {
         {item_func('adds_banner')}
         {item_func('adds_logo')}
         {item_func('adds_token_total')}
-        {item_func('adds_ico_total')}
         {item_func('adds_kyc_require')}
         {item_func('adds_erc20')}
         {item_func('adds_on_market_time')}
