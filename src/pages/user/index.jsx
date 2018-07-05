@@ -11,6 +11,7 @@ const MenuItemGroup = Menu.ItemGroup;
 const { Header, Content, Footer, Sider } = Layout;
 const Deomo = bundle(() => import('../PageIn/index'));
 const Permission = bundle(() => import('../Permission/index'));
+const UIShow = bundle(() => import('../UIShow/index'));
 const Edit = bundle(() => import('../Edit/index'));
 const EditUsers = bundle(() => import('../EditUsers/index'));
 const DragTable = bundle(() => import('../DragTable'));
@@ -48,6 +49,9 @@ class PageIn extends React.Component {
             <Menu.Item key="/permission">
               <Link to="/projects/permission" >permission</Link>
             </Menu.Item>
+           <Menu.Item key="/show">
+              <Link to="/projects/show" >展示</Link>
+            </Menu.Item>
             <Menu.Item key="/logout">
               <a  onClick={this.logout.bind(this)}>退出</a>
             </Menu.Item>
@@ -58,7 +62,7 @@ class PageIn extends React.Component {
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               <Route exact={true} path="/projects" component={Deomo} />
               <Route exact={true} path="/projects/permission" component={Permission} />
-              {/* <Route exact={true} path="/admin/create_account" component={Permission} /> */}
+              <Route exact={true} path="/projects/show" component={UIShow} />
               <Route exact={true} path="/projects/edit/:id" component={Edit} />
               <Route exact={true} path="/projects/editusers/:id" component={EditUsers} />
               <Route exact={true} path="/projects/projects" component={DragTable} />
