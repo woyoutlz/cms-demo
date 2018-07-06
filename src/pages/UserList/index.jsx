@@ -7,26 +7,7 @@ import * as React from 'react';
 import { Table, Icon, Divider } from 'antd';
 import * as getUserListActions from 'src/actions/getUserListActions';
 import { editUser } from './service'
-
-
-// const data = [{
-//   key: '1',
-//   name: 'John Brown',
-//   age: 32,
-//   address: 'New York No. 1 Lake Park',
-// }, {
-//   key: '2',
-//   name: 'Jim Green',
-//   age: 42,
-//   address: 'London No. 1 Lake Park',
-// }, {
-//   key: '3',
-//   name: 'Joe Black',
-//   age: 32,
-//   address: 'Sidney No. 1 Lake Park',
-// }];
-
-class PageIn extends React.Component {
+class UserList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +22,7 @@ class PageIn extends React.Component {
     title: 'ape_link',
     dataIndex: 'ape_link',
     key: 'ape_link',
-    render: text => <a href="javascript:;">{text}</a>,
+    render: text => <a href={text} target='__blank'>详细信息</a>,
   }, {
     title: 'base_token_count',
     dataIndex: 'base_token_count',
@@ -153,4 +134,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PageIn)
+)(UserList)

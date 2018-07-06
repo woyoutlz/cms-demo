@@ -6,14 +6,12 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 import { Table, Icon, Divider } from 'antd';
 import { BrowserRouter as Router, Route, Link, ConnectedRouter } from "react-router-dom";
 import bundle from '../../Bundle';
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 const { Header, Content, Footer, Sider } = Layout;
 const Deomo = bundle(() => import('../Project/index'));
 const Permission = bundle(() => import('../Permission/index'));
 const UIShow = bundle(() => import('../UIShow/index'));
 const Edit = bundle(() => import('../Edit/index'));
-const EditUsers = bundle(() => import('../EditUsers/index'));
+const UserList = bundle(() => import('../UserList/index'));
 const DragTable = bundle(() => import('../DragTable'));
 class PageIn extends React.Component {
   constructor(props) {
@@ -36,10 +34,7 @@ class PageIn extends React.Component {
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
-          collapsible
-          collapsed={this.state.collapsed}
-          onCollapse={this.onCollapse}
-          
+          style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}
         >
           <div className="logo" />
           <Menu theme="dark" selectedKeys={[pathname]} mode="inline">
@@ -58,20 +53,20 @@ class PageIn extends React.Component {
           </Menu>
         </Sider>
         <Layout>
-          <Content style={{ margin: '16px' }}>
+          <Content style={{ marginLeft: 200 }}>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               <Route exact={true} path="/projects" component={Deomo} />
               <Route exact={true} path="/projects/permission" component={Permission} />
               <Route exact={true} path="/projects/show" component={UIShow} />
               <Route exact={true} path="/projects/edit/:id" component={Edit} />
-              <Route exact={true} path="/projects/editusers/:id" component={EditUsers} />
+              <Route exact={true} path="/projects/userlist/:id" component={UserList} />
               <Route exact={true} path="/projects/projects" component={DragTable} />
               <Route exact={true} path="/projects/add" component={Edit} />
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          {/* <Footer style={{ textAlign: 'center' }}>
             Footer Infos
-            </Footer>
+            </Footer> */}
         </Layout>
       </Layout>
     );

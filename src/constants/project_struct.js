@@ -151,7 +151,7 @@ let op_project = {
   },
   "close_at": {
     "type":"string_date",
-    "display": "项目结束时间"
+    "display": "运营结束时间"
   },
   "token": {
     "op_required": true,
@@ -175,7 +175,7 @@ let op_project = {
   "base_accuracy": {
     "op_required": true,
     "type":"number",
-    "desc":"接受众筹的最小精度,如0.1",
+    "desc":"接受众筹的最小精度,如0.1则填1",
     "display": "众筹精度"
   },
   "deleted":{

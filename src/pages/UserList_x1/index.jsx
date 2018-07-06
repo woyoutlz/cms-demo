@@ -11,7 +11,7 @@ const columns = [{
   title: op_project['name'].display,
   dataIndex: 'name',
   key: 'name',
-  render: text => <a href="javascript:;">{text}</a>,
+  render: text => <a href="{javascript:;}">{text}</a>,
 }, {
   title: 'created_at',
   dataIndex: 'created_at',
@@ -49,7 +49,7 @@ const columns = [{
       <Divider type="vertical" />
       <a href="javascript:;">Delete</a>
       <Divider type="vertical" />
-      <Link to={`/projects/editusers/${record.id}`}>Users</Link>
+      <Link to={`/projects/userlist/${record.id}`}>Users</Link>
     </span>
   ),
 }];
