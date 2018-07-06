@@ -24,6 +24,10 @@ let op_project = {
   "adds_keyword": {
     "display": "优势关键词"
   },
+  "adds_whitepaper": {
+    "type":"url",
+    "display": "白皮书"
+  },
   "adds_advantage": {
     "display": "项目优势"
   },

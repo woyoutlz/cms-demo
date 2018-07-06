@@ -9,7 +9,7 @@ import bundle from '../../Bundle';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const { Header, Content, Footer, Sider } = Layout;
-const Deomo = bundle(() => import('../PageIn/index'));
+const Deomo = bundle(() => import('../Project/index'));
 const Permission = bundle(() => import('../Permission/index'));
 const UIShow = bundle(() => import('../UIShow/index'));
 const Edit = bundle(() => import('../Edit/index'));

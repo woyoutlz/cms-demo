@@ -65,21 +65,4 @@ export function getForm(params) {
         })
     }
 }
-// export function createProject (data) {
-//     return dispatch => {
-//         fetchJson({
-//             success: (res) => {
-//                 // dispatch({
-//                 //     type: Type.CREATE_PROJECT,
-//                 //     payload: {}
-//                 // })
-//             },
-//             type: 'POST',
-//             url: '/v1/project/create',
-//             data: {
-//                 token: window.sessionStorage.getItem('token'),
-//                 data: {}
-//             }
-//         })
-//     }
-// }
+

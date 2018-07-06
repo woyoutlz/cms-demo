@@ -8,7 +8,7 @@ import { deleteProjectServiece } from './service';
 import { op_project } from 'src/constants/project_struct.js'
 import ConfirmModal from './modal'
 
-class PageIn extends React.Component {
+class Project extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -115,4 +115,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PageIn)
+)(Project)

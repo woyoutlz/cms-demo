@@ -9,11 +9,9 @@ import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter } from 'react-router-redux';
 import { BigNumber } from 'bignumber.js';
 import Login from './pages/login';
-import User from './pages/user';
+import Main from './pages/main';
 const history = createHistory();
 const { Header, Content, Footer, Sider } = Layout;
-const Demo = bundle(() => import('./pages/PageIn'));
-const DragTable = bundle(() => import('./pages/DragTable'));
 class App extends React.Component{
   state = {
     collapsed: false,
@@ -27,9 +25,7 @@ class App extends React.Component{
       <ConnectedRouter history={history}>
       <div className="App">
         <Route path="/" exact={true} component={Login} />
-        <Route path="/projects" component={User} />
-        {/* <Route exact={true} path="/home" component={Demo} />
-        <Route exact={true} path="/projects" component={DragTable} /> */}
+        <Route path="/projects" component={Main} />
       </div>
       </ConnectedRouter>
     );

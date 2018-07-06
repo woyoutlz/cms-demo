@@ -39,8 +39,6 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // console.log(this.props.tradingForm)
-        // values.id = this.props.tradingForm.id
         values = _.pickBy(values,(v)=>{
           return v && v.length > 0
         });
@@ -73,7 +71,6 @@ class RegistrationForm extends React.Component {
             }
           });
         }
-        // console.log('Received values of form: ', values);
       }
     });
   }
@@ -85,9 +82,7 @@ class RegistrationForm extends React.Component {
   }
   render() {
     let self = this
-    const { getFieldDecorator } = this.props.form;
-    // const { autoCompleteResult } = this.state;
-
+    const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -130,7 +125,6 @@ class RegistrationForm extends React.Component {
       </FormItem>
     }
     function is_string_date(rule, value, callback) {
-      // if (value)
       if(value ==='Invalid date'){
         callback(value)
       }else{
@@ -225,6 +219,7 @@ class RegistrationForm extends React.Component {
         {item_func('adds_keyword')}
         {item_func('adds_advantage')}
         {item_func('adds_website')}
+        {item_func('adds_whitepaper')}
         {item_func('adds_detail')}
         {item_func('adds_banner')}
         {item_func('adds_logo')}
