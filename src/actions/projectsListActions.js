@@ -2,7 +2,7 @@ import * as Type from '../constants/ActionType.js';
 import { fetchJson } from 'src/utils/fetch.js';
 // import { PRODUCT } from 'src/utils/api';
 
-export function getProjectsList (params) {
+export function getProjectsList(params) {
     return dispatch => {
         // dispatch({
         //     payload: {a: 2, b: 3},
@@ -27,24 +27,29 @@ export function getProjectsList (params) {
             url: '/api/v1/project/list',
             data: {
                 token: window.sessionStorage.getItem('token'),
-                data: {page:1, limit: 100}
+                data: {
+                    page: 1,
+                    limit: 100,
+                    "order_by": "created_at",
+                    "asc": false,
+                }
             }
         })
     }
 }
-export function getForm (params) {
-    if (!params.id){
+export function getForm(params) {
+    if (!params.id) {
         return
     }
     return dispatch => {
         fetchJson({
             success: (res) => {
-                console.log(2,res)
+                console.log(2, res)
                 const data = res.result.data || [];
                 const newData = data.filter((e) => e.id == params.id);
                 dispatch({
                     type: Type.GET_FORM,
-                    payload: {data: newData}
+                    payload: { data: newData }
                 })
             },
             type: 'POST',
@@ -52,8 +57,8 @@ export function getForm (params) {
             data: {
                 token: window.sessionStorage.getItem('token'),
                 data: {
-                    query:{
-                        id:params.id
+                    query: {
+                        id: params.id
                     }
                 }
             }
