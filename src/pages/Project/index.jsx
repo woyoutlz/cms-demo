@@ -101,7 +101,7 @@ class Project extends React.Component {
             <Button type="primary" htmlType="submit" className="login-form-button" onClick={this.change_show.bind(this)}>展示信息</Button>
           </Col>
         </Row>
-        <Table columns={this.state.columns} dataSource={data}  bordered pagination={{ pageSize: 20 }} scroll={{ y: 400 }} />
+        <Table columns={this.state.columns} dataSource={data}  bordered pagination={{ pageSize: 10 }} scroll={{ y: "70vh" }} />
       </div>
     );
   }

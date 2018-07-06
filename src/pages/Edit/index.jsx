@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Input, Button ,notification} from 'antd';
+import { Form, Input, Button ,notification,BackTop} from 'antd';
 // import * as getTradingPairFormAction from 'src/actions/getTradingPairFormAction.js'; 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -248,6 +248,7 @@ class RegistrationForm extends React.Component {
         <Button onClick={this.cancel}>Cancel</Button>
         <Button type="primary" htmlType="submit">submit</Button>
         {/* </FormItem> */}
+        <BackTop/>
       </Form>
     );
   }
