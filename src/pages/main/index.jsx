@@ -12,6 +12,7 @@ const Permission = bundle(() => import('../Permission/index'));
 const UIShow = bundle(() => import('../UIShow/index'));
 const Edit = bundle(() => import('../Edit/index'));
 const UserList = bundle(() => import('../UserList/index'));
+const History = bundle(() => import('../History/index'));
 const DragTable = bundle(() => import('../DragTable'));
 class PageIn extends React.Component {
   constructor(props) {
@@ -47,6 +48,9 @@ class PageIn extends React.Component {
            <Menu.Item key="/show">
               <Link to="/projects/show" >展示</Link>
             </Menu.Item>
+            <Menu.Item key="/history">
+              <Link to="/projects/history" >操作历史</Link>
+            </Menu.Item>
             <Menu.Item key="/logout">
               <a  onClick={this.logout.bind(this)}>退出</a>
             </Menu.Item>
@@ -58,6 +62,7 @@ class PageIn extends React.Component {
               <Route exact={true} path="/projects" component={Deomo} />
               <Route exact={true} path="/projects/permission" component={Permission} />
               <Route exact={true} path="/projects/show" component={UIShow} />
+                <Route exact={true} path="/projects/history" component={History} />
               <Route exact={true} path="/projects/edit/:id" component={Edit} />
               <Route exact={true} path="/projects/userlist/:id" component={UserList} />
               <Route exact={true} path="/projects/projects" component={DragTable} />
