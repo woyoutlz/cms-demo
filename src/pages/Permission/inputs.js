@@ -35,8 +35,9 @@ export const controll_types ={
     "path":["data","project"]
   },
   "show_control":{
-    "name":"控制状态:online/offline",
-    "type":"input",
+    "name":"控制状态",
+    "type":"select",
+    "type_msg":["pre_online","offline","online"],
     "path":["data","control"]
   },
   "show_banner":{

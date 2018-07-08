@@ -20,6 +20,24 @@ export const api_post = (url, data, istoken, cb) => {
         data: in_data
     })
 }
+export const api_get = (url, data, cb) => {
+    let in_data = data
+    const callback = cb
+    fetchJson({
+        success: (res) => {
+            if (cb) {
+                callback(res);
+            }
+            // dispatch({
+            //     type: Type.ADD_TRADING_PAIR,
+            //     payload: res
+            // })
+        },
+        type: 'GET',
+        url: url,
+        data: in_data
+    })
+}
 export const fetchJson = (options) => {
     const { url, type, data, ...others } = options;
 

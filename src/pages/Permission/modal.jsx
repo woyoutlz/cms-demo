@@ -48,6 +48,11 @@ class PermissionModal extends React.Component {
     cool[key] = e.target.value
     this.setState(cool)
   }
+  handleSelect(key,v){
+    let cool = {}
+    cool[key] = v
+    this.setState(cool)
+  }
   render() {
     return (
       <Col span={3}>
@@ -59,9 +64,20 @@ class PermissionModal extends React.Component {
           onCancel={this.handleCancel.bind(this)}
         >
           <Row>
-            {this.props.datas.map(x => <Col span={6} key={this.props.name+x.key}>
-              <Input  defaultValue="" placeholder={x.name} onChange={this.handleInput.bind(this,x.key)}  onBlur={this.getReason} />
-            </Col>)}
+            {this.props.datas.map(x => {
+              if (x.type == "input"){
+                return <Col span={6} key={this.props.name+x.key}>
+                  <Input  defaultValue="" placeholder={x.name} onChange={this.handleInput.bind(this,x.key)}  onBlur={this.getReason} />
+                </Col>
+              }
+              if (x.type == "select"){
+              return <Col span={6} key={this.props.name+x.key}>
+                  <Select  style={{ width: 120 }} placeholder={x.name} onChange={this.handleSelect.bind(this,x.key)} >
+                      {x.type_msg.map(s=><Option key={this.props.name+x.key+s} value={s}>{s}</Option>)}
+                    </Select>
+                </Col>
+              }
+            })}
           </Row>
         </Modal>
       </Col>

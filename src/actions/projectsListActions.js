@@ -32,6 +32,10 @@ export function getProjectsList(params) {
                     limit: 100,
                     "order_by": "created_at",
                     "asc": false,
+                },
+                control:{
+                    limit:100,
+                    sort:{timestamp:-1}
                 }
             }
         })

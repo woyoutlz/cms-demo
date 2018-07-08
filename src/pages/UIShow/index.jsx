@@ -1,78 +1,71 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
-import { notification } from 'antd';
-import { adminService } from './service';
+import { notification,Table,Col,Row ,Button} from 'antd';
+import { api_get,api_post } from 'src/utils/fetch.js';
 import ConfirmModal from './modal';
 import { op_project } from 'src/constants/project_struct.js'
 import { controll_types } from './inputs.js'
 import _ from 'lodash'
-class Permission extends React.Component {
+class UIShow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      projects:[],
+      banners:[]
     };
   }
+  
   componentDidMount() {
-    // this.props.actions.getProjectsList();
+     this.getProjectsList('pre_online,online');
   }
-
-  createProject = () => {
-    this.props.history.push('/projects/add')
-  }
-
-  mapper(data) {
-    return data.map(i => {
-      controll_types[i].key = i
-      return controll_types[i]
-    }).filter(i => !!i)
-  }
-  modalok(url, datas, result) {
-    // console.log(datas,result)
-    let args = {}
-    for (let i of datas) {
-      let rpath = i.path.join(".")
-      _.set(args,rpath,result[i.key])
-    }
+  getProjectsList(control){
     let self = this
-    // console.log(url,args)
-    adminService(url, args, res => {
-      console.log(res)
-      if(res.code==0){
-        self.openNotification(url,"请求成功")
-      }
+    api_get("/api/cybex/projects/banner",{type:control},(res)=>{
+      self.setState({banners:res.result})
+    })
+    api_get("/api/cybex/projects",{type:control},(res)=>{
+      self.setState({projects:res.result})
     })
   }
-  openNotification(msg,des) {
-    notification.open({
-      message: msg,
-      description: des,
-    })
+  online_pre(){
+   if(window.confirm("你确定把预发布的项目发布吗？")){
+      api_post("/api/v1/project/pre2online",{},true,(res)=>{
+        if(res.code==0){
+              notification.open({
+              message: "发布成功",
+              description: JSON.stringify(res.result),
+            })
+        }
+      })
+   }
   }
   render() {
     return (
       <div className="page-in">
-        <ConfirmModal
-          cb={this.modalok.bind(this, '/api/admin/create_account')}
-          name='创建用户'
-          datas={this.mapper(["account", "password"])}
-        />
-         <ConfirmModal
-          cb={this.modalok.bind(this, '/api/admin/permission/spe_project')}
-        name='项目权限'
-        datas={this.mapper(["pro_account","project_id","project_action"])}
-        />
-        <ConfirmModal
-          cb={this.modalok.bind(this, '/api/admin/permission/project_show')}
-        name='web端展示修改权限'
-        datas={this.mapper(["pro_account","status"])}
-        /> 
-        <ConfirmModal
-        cb={this.modalok.bind(this, '/api/v1/project/changeshow')}
-        name='web端修改'
-        datas={this.mapper(["show_projectid","show_control","show_banner","show_score"])}
-        /> 
+        <Row> 
+        <Col span={3}>
+            <Button type="primary" htmlType="submit" className="login-form-button" onClick={this.online_pre}>发布</Button>
+          </Col>
+        </Row>
+        <Row><Col span={3}><h1>Banner</h1></Col></Row>
+       <Row>
+       {this.state.banners.map(i=> <Col span={4} key={i.id+'banner'}> 
+            <Link to={`/projects/edit/${i.id}`}>{i.name}</Link>
+            <span style={{margin:"10px"}}>{i.id}</span>
+            <span style={{margin:"10px"}}>{i.control}</span>
+              <span style={{margin:"10px"}}>banner:{i.banner}</span>
+          </Col>)}
+       </Row>
+        <Row><Col span={3}><h1>List</h1></Col></Row>
+       <Row>
+          {this.state.projects.map(i=> <Col span={4} key={i.id+'banner'} style= {{"background":i.control=="pre_online"?"yellow":"white"}}> 
+              <Link to={`/projects/edit/${i.id}`}>{i.name}</Link>
+             <span style={{margin:"10px"}}>{i.id}</span>
+             <span style={{margin:"10px"}}>{i.control}</span>
+              <span style={{margin:"10px"}}>score:{i.score}</span>
+          </Col>)}
+       </Row>
       </div>
     );
   }
@@ -90,4 +83,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Permission)
+)(UIShow)

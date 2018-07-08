@@ -2,11 +2,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
-import { Table, Icon, Divider, Button, Row, Col } from 'antd';
+import { Table, Icon, Divider, Button, Row, Col ,notification } from 'antd';
 import * as projectsListActions from 'src/actions/projectsListActions.js';
 import { deleteProjectServiece } from './service';
 import { op_project } from 'src/constants/project_struct.js'
 import ConfirmModal from './modal'
+import PermissionModel from 'src/pages/Permission/modal'
+import { adminService } from 'src/pages/Permission/service.js'
+import { controll_types } from 'src/pages/Permission/inputs.js'
 import _ from 'lodash'
 class Project extends React.Component {
   constructor(props) {
@@ -39,26 +42,87 @@ class Project extends React.Component {
         ),
       }
     ]
+     let columns_end2 = [
+      {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          <span>
+             <PermissionModel
+                cb={this.modalok.bind(this, '/api/v1/project/changeshow',record.id)}
+                name='web端修改'
+                datas={this.mapper(["show_control","show_banner","show_score"])}
+                /> 
+          </span>
+        ),
+      }
+    ]
     let columns = _.concat(columns_start, columns_nomal, columns_end)
-    let columns_2 =  _.concat(columns_start,['created_at','score','banner','control'].map(this.map_field),
-    columns_end)
+    let columns_2 =  _.concat(columns_start,['id','created_at',{name:'score',type:'control_sort'},{name:"banner",type:"control_sort"},
+    {name:'control','type':'filter_data',msg:['online','offline','pre_online']}].map(this.map_field),
+    columns_end2)
     this.state = {
       columns: columns,
       columns_1:columns,
       columns_2:columns_2
     };
   }
+  modalok(url,id, datas, result) {
+    console.log(id,datas,result)
+    let args = {}
+    for (let i of datas) {
+      let rpath = i.path.join(".")
+      _.set(args,rpath,result[i.key])
+    }
+    _.set(args,'data.project',id)
+    let self = this
+    // console.log(url,args)
+    adminService(url, args, res => {
+      console.log(res)
+      if(res.code==0){
+         notification.open({
+            message: url,
+            description: "请求成功",
+          })
+      }
+    })
+  }
+  mapper(data) {
+    return data.map(i => {
+      controll_types[i].key = i
+      return controll_types[i]
+    }).filter(i => !!i)
+  }
   map_field(name) {
+    let obj
+    if(name.name){
+      obj  =name
+      name = name.name
+    }
     let display = name
     if (op_project[name] && op_project[name].display) {
       display = op_project[name].display
     }
-    return {
+    let return_obj =  {
       title: display,
       dataIndex: name,
       key: name,
       width:100,
     }
+    if (obj && obj.type == 'control_sort'){
+      return_obj.sorter = (a,b)=>a[name]-b[name]
+    }
+    if (obj && obj.type == 'filter_data'){
+      Object.assign(return_obj,{
+        filters:obj.msg.map(i=>{
+          return {text:i,value:i}
+        }),
+        onFilter:(v,r)=>r.control===v
+
+      })
+      console.log(name,return_obj)
+    }
+    return　return_obj
   }
   componentDidMount() {
     this.props.actions.getProjectsList();
@@ -82,6 +146,13 @@ class Project extends React.Component {
       'columns':this.state.columns_1
     })
   }
+  handleChange (pagination, filters, sorter) {
+    console.log('Various parameters', pagination, filters, sorter);
+    this.setState({
+      filteredInfo: filters,
+      sortedInfo: sorter,
+    });
+  }
   render() {
     const data = this.props.data;
     data.forEach((e, i) => {
@@ -101,7 +172,7 @@ class Project extends React.Component {
             <Button type="primary" htmlType="submit" className="login-form-button" onClick={this.change_show.bind(this)}>展示信息</Button>
           </Col>
         </Row>
-        <Table columns={this.state.columns} dataSource={data}  bordered pagination={{ pageSize: 10 }} scroll={{ y: "70vh" }} />
+        <Table columns={this.state.columns} dataSource={data} onChange={this.handleChange.bind(this)}  bordered pagination={{ pageSize: 10 }} scroll={{ y: "70vh" }} />
       </div>
     );
   }
