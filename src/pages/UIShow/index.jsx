@@ -50,7 +50,7 @@ class UIShow extends React.Component {
         </Row>
         <Row><Col span={3}><h1>Banner</h1></Col></Row>
        <Row>
-       {this.state.banners.map(i=> <Col key={i.id+'banner'}> 
+       {this.state.banners.map(i=> <Col key={i.id+'banner'} style= {{"background":i.control=="pre_online"?"yellow":"white"}}> 
             <Link to={`/projects/edit/${i.id}`}>{i.name}</Link>
             <span style={{margin:"10px"}}>{i.id}</span>
             <span style={{margin:"10px"}}>{i.control}</span>
