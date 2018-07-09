@@ -13,6 +13,7 @@ const UIShow = bundle(() => import('../UIShow/index'));
 const Edit = bundle(() => import('../Edit/index'));
 const UserList = bundle(() => import('../UserList/index'));
 const History = bundle(() => import('../History/index'));
+const Trade = bundle(() => import('../Trade/index'));
 const DragTable = bundle(() => import('../DragTable'));
 class PageIn extends React.Component {
   constructor(props) {
@@ -23,10 +24,10 @@ class PageIn extends React.Component {
   }
   componentDidMount() {
   }
-  logout(){
-    if(window.confirm("确认退出吗")){
-      window.sessionStorage.setItem("token",null)
-      this.props.history.push('/') 
+  logout() {
+    if (window.confirm("确认退出吗")) {
+      window.sessionStorage.setItem("token", null)
+      this.props.history.push('/')
     }
   }
   render() {
@@ -45,14 +46,17 @@ class PageIn extends React.Component {
             <Menu.Item key="/permission">
               <Link to="/projects/permission" >permission</Link>
             </Menu.Item>
-           <Menu.Item key="/show">
+            <Menu.Item key="/show">
               <Link to="/projects/show" >展示</Link>
             </Menu.Item>
             <Menu.Item key="/history">
               <Link to="/projects/history" >操作历史</Link>
             </Menu.Item>
+            <Menu.Item key="/trade">
+              <Link to="/projects/trade" >trade查询</Link>
+            </Menu.Item>
             <Menu.Item key="/logout">
-              <a  onClick={this.logout.bind(this)}>退出</a>
+              <a onClick={this.logout.bind(this)}>退出</a>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -62,7 +66,8 @@ class PageIn extends React.Component {
               <Route exact={true} path="/projects" component={Deomo} />
               <Route exact={true} path="/projects/permission" component={Permission} />
               <Route exact={true} path="/projects/show" component={UIShow} />
-                <Route exact={true} path="/projects/history" component={History} />
+              <Route exact={true} path="/projects/history" component={History} />
+              <Route exact={true} path="/projects/trade" component={Trade} />
               <Route exact={true} path="/projects/edit/:id" component={Edit} />
               <Route exact={true} path="/projects/userlist/:id" component={UserList} />
               <Route exact={true} path="/projects/projects" component={DragTable} />

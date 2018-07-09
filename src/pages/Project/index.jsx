@@ -166,10 +166,10 @@ class Project extends React.Component {
             <Button type="primary" htmlType="submit" className="login-form-button" onClick={this.createProject}>Create</Button>
           </Col>
           <Col span={3}>
-            <Button type="primary" htmlType="submit" className="login-form-button" onClick={this.change_info.bind(this)}>项目信息</Button>
+            <Button  htmlType="submit" className="login-form-button" onClick={this.change_info.bind(this)}>项目信息</Button>
           </Col>
           <Col span={3}>
-            <Button type="primary" htmlType="submit" className="login-form-button" onClick={this.change_show.bind(this)}>展示信息</Button>
+            <Button  htmlType="submit" className="login-form-button" onClick={this.change_show.bind(this)}>展示信息</Button>
           </Col>
         </Row>
         <Table columns={this.state.columns} dataSource={data} onChange={this.handleChange.bind(this)}  bordered pagination={{ pageSize: 10 }} scroll={{ y: "70vh" }} />
