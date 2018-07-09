@@ -50,7 +50,7 @@ class UIShow extends React.Component {
         </Row>
         <Row><Col span={3}><h1>Banner</h1></Col></Row>
        <Row>
-       {this.state.banners.map(i=> <Col span={4} key={i.id+'banner'}> 
+       {this.state.banners.map(i=> <Col key={i.id+'banner'}> 
             <Link to={`/projects/edit/${i.id}`}>{i.name}</Link>
             <span style={{margin:"10px"}}>{i.id}</span>
             <span style={{margin:"10px"}}>{i.control}</span>
@@ -59,7 +59,7 @@ class UIShow extends React.Component {
        </Row>
         <Row><Col span={3}><h1>List</h1></Col></Row>
        <Row>
-          {this.state.projects.map(i=> <Col span={4} key={i.id+'socre'} style= {{"background":i.control=="pre_online"?"yellow":"white"}}> 
+          {this.state.projects.map(i=> <Col  key={i.id+'socre'} style= {{"background":i.control=="pre_online"?"yellow":"white"}}> 
               <Link to={`/projects/edit/${i.id}`}>{i.name}</Link>
              <span style={{margin:"10px"}}>{i.id}</span>
              <span style={{margin:"10px"}}>{i.control}</span>
