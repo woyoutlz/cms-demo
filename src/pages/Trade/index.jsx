@@ -33,13 +33,17 @@ class Trade extends React.Component {
     if (user_id && user_id !== "") {
       query_obj.user_id = user_id
     }
-    let find_obj = { limit: 100 }
+    let find_obj = {
+      limit: 100,
+      "order_by": "created_at",
+      "asc": false
+    }
     if (!_.isEmpty(query_obj)) {
       find_obj.query = query_obj
     }
     api_post("/api/v1/trade/list", { data: find_obj }, true, (res) => {
       console.log(res)
-      let data = res.result.data.map(i=>{
+      let data = res.result.data.map(i => {
         i.key = i.id + i.ieo_type
         return i
       })
@@ -68,7 +72,7 @@ class Trade extends React.Component {
       key: name,
       width: 100,
     }
-    return 　return_obj
+    return return_obj
   }
   projectInputValue(evt) {
     this.setState({
@@ -92,7 +96,7 @@ class Trade extends React.Component {
           <Col span={3}><Input placeholder="user id" onChange={this.userInputValue.bind(this)} /></Col>
           <Col span={3}><Button onClick={this.search.bind(this)}>搜索</Button></Col>
         </Row>
-        <Table columns={this.state.columns}  dataSource={this.state.trades} />
+        <Table columns={this.state.columns} dataSource={this.state.trades} />
 
       </div>
     );
