@@ -71,6 +71,7 @@ let op_project = {
     "display": "软顶"
   },
   "receive_address":{
+    "op":"R",
     "display": "收款地址"
   },
   token_count: {
