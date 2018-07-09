@@ -232,6 +232,7 @@ class RegistrationForm extends React.Component {
           label="add end"
         >
         </FormItem>
+        {item_func('receive_address')}
         {item_func('base_soft_cap')}
         {item_func('close_at')}
         {item_func('control_status')}

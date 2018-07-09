@@ -70,6 +70,9 @@ let op_project = {
     "check": ["base_soft_cap"],
     "display": "软顶"
   },
+  "receive_address":{
+    "display": "收款地址"
+  },
   token_count: {
     "op":"R",
     "display": "众筹token总数"
