@@ -6,7 +6,7 @@ export const controll_types ={
   },
   "password":{
     "name":"密码",
-    "type":"password",
+    "type":"input",
     "path":["password"]
   },
   "pro_account":{
