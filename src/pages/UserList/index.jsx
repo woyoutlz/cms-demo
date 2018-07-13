@@ -72,27 +72,16 @@ class UserList extends React.Component {
     key: 'action',
     render: (text, record) => (
       <span>
-        {/* <Link to={`/projects/edit/${record.id}`}>Edit</Link>
-        <Divider type="vertical" /> */}
-        {/* <a href="javascript:;" onClick={this.editUser.bind(this, record)}>Edit_User</a> */}
         <ConfirmModal
-          // showConfirmModal={this.state.showConfirmModal}
           record={record}
-          // confirmData={this.state.confirmData}
-          // cancelCb={()=>{this.setState({
-          //   showConfirmModal: false,
-          // })}}
-          // comfirmRecord={this.state.comfirmRecord}
           okCb={this.sendUserData}
         />
-        {/* <Divider type="vertical" />
-        <Link to={`/projects/editusers/${record.id}`}>Users</Link> */}
       </span>
     ),
   }];
-  editUser(record, e) {
-    this.setState({ showConfirmModal: true, record: record })
-  }
+  // editUser(record, e) {
+  //   this.setState({ showConfirmModal: true, record: record })
+  // }
   sendUserData = (data) => {
     let self = this
     console.log(data)

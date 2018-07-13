@@ -12,7 +12,7 @@ export const editUser = (data, cb) => {
           // })
       },
       type: 'POST',
-      url: '/api/v1/project/user/edit',
+      url: '/api/v1/project/user/check',
       data: {
           token: window.sessionStorage.getItem('token'),
           data: data
