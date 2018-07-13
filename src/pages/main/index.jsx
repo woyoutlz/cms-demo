@@ -23,6 +23,12 @@ class PageIn extends React.Component {
     };
   }
   componentDidMount() {
+    console.log("aaa")
+    let token = window.sessionStorage.getItem("token")
+    if (!token){
+      console.log("aaa")
+      this.props.history.push('/')
+    }
   }
   logout() {
     if (window.confirm("确认退出吗")) {
