@@ -35,18 +35,18 @@ class Permission extends React.Component {
     let args = {}
     for (let i of datas) {
       let rpath = i.path.join(".")
-      _.set(args,rpath,result[i.key])
+      _.set(args, rpath, result[i.key])
     }
     let self = this
     // console.log(url,args)
     adminService(url, args, res => {
       console.log(res)
-      if(res.code==0){
-        self.openNotification(url,"请求成功")
+      if (res.code == 0) {
+        self.openNotification(url, "请求成功")
       }
     })
   }
-  openNotification(msg,des) {
+  openNotification(msg, des) {
     notification.open({
       message: msg,
       description: des,
@@ -60,21 +60,21 @@ class Permission extends React.Component {
           name='创建用户'
           datas={this.mapper(["account", "password"])}
         />
-         <ConfirmModal
+        <ConfirmModal
           cb={this.modalok.bind(this, '/api/admin/permission/spe_project')}
-        name='项目权限'
-        datas={this.mapper(["pro_account","project_id","project_action"])}
+          name='项目权限'
+          datas={this.mapper(["pro_account", "project_id", "project_action"])}
         />
         <ConfirmModal
           cb={this.modalok.bind(this, '/api/admin/permission/project_show')}
-        name='web端展示修改权限'
-        datas={this.mapper(["pro_account","status"])}
-        /> 
+          name='web端展示修改权限'
+          datas={this.mapper(["pro_account", "status"])}
+        />
         <ConfirmModal
-        cb={this.modalok.bind(this, '/api/v1/project/changeshow')}
-        name='web端修改'
-        datas={this.mapper(["show_projectid","show_control","show_banner","show_score"])}
-        /> 
+          cb={this.modalok.bind(this, '/api/v1/project/changeshow')}
+          name='web端修改'
+          datas={this.mapper(["show_projectid", "show_control", "show_banner", "show_score"])}
+        />
       </div>
     );
   }

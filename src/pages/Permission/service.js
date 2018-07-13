@@ -1,14 +1,14 @@
 import { fetchJson } from 'src/utils/fetch.js';
 
-export const adminService = (url,data, cb) => {
+export const adminService = (url, data, cb) => {
     const callback = cb;
     let params = {
         token: window.sessionStorage.getItem('token')
     }
-    Object.assign(params,data)
+    Object.assign(params, data)
     fetchJson({
         success: (res) => {
-            if(cb){
+            if (cb) {
                 callback(res);
             }
             // dispatch({

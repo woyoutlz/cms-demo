@@ -4,7 +4,7 @@ export const deleteProjectServiece = (data, cb) => {
     const callback = cb;
     fetchJson({
         success: (res) => {
-            if(cb){
+            if (cb) {
                 callback(res);
             }
             // dispatch({
@@ -16,7 +16,7 @@ export const deleteProjectServiece = (data, cb) => {
         url: '/api/v1/project/delete',
         data: {
             token: window.sessionStorage.getItem('token'),
-            data: {...data}
+            data: { ...data }
         }
     })
 }

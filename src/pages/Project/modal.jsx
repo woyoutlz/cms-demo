@@ -27,10 +27,10 @@ class PageIn extends React.Component {
         {
           "id": this.props.datas.id
         }
-      },true,(res)=>{
+      }, true, (res) => {
         console.log(res)
-        if (res.code==0){
-          self.setState({status:res.result})
+        if (res.code == 0) {
+          self.setState({ status: res.result })
         }
       })
   }
@@ -65,8 +65,8 @@ class PageIn extends React.Component {
   }
   render() {
     let self = this
-    function get_status_value(name){
-      if (self.state.status){
+    function get_status_value(name) {
+      if (self.state.status) {
         return self.state.status[name]
       }
     }
@@ -81,43 +81,43 @@ class PageIn extends React.Component {
           onCancel={this.handleCancel.bind(this)}
         >
           <Row>
-            <span style={{marginRight:"20px"}}>收钱人数</span><span>{get_status_value('ico_user_count')}</span>
+            <span style={{ marginRight: "20px" }}>收钱人数</span><span>{get_status_value('ico_user_count')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>收到base</span><span>{get_status_value('base_received')}</span>
+            <span style={{ marginRight: "20px" }}>收到base</span><span>{get_status_value('base_received')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>市场量</span><span>{get_status_value('on_market')}</span>
+            <span style={{ marginRight: "20px" }}>市场量</span><span>{get_status_value('on_market')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>暂停发币</span><span>{get_status_value('stopped')}</span>
+            <span style={{ marginRight: "20px" }}>暂停发币</span><span>{get_status_value('stopped')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>发币人数</span><span>{get_status_value('ico_user_sent_count')}</span>
+            <span style={{ marginRight: "20px" }}>发币人数</span><span>{get_status_value('ico_user_sent_count')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>用户申请数</span><span>{get_status_value('user_application_count')}</span>
+            <span style={{ marginRight: "20px" }}>用户申请数</span><span>{get_status_value('user_application_count')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>待退还币</span><span>{get_status_value('base_received_invalid')}</span>
+            <span style={{ marginRight: "20px" }}>待退还币</span><span>{get_status_value('base_received_invalid')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>错误币种</span><span>{get_status_value('base_received_invalid_other')}</span>
+            <span style={{ marginRight: "20px" }}>错误币种</span><span>{get_status_value('base_received_invalid_other')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>延迟发币</span><span>{get_status_value('delay')}</span>
+            <span style={{ marginRight: "20px" }}>延迟发币</span><span>{get_status_value('delay')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>未确认</span><span>{get_status_value('freezing')}</span>
+            <span style={{ marginRight: "20px" }}>未确认</span><span>{get_status_value('freezing')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>暂停发币</span><span>{get_status_value('stopped')}</span>
+            <span style={{ marginRight: "20px" }}>暂停发币</span><span>{get_status_value('stopped')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>已发币</span><span>{get_status_value('sent')}</span>
+            <span style={{ marginRight: "20px" }}>已发币</span><span>{get_status_value('sent')}</span>
           </Row>
           <Row>
-            <span style={{marginRight:"20px"}}>状态检验</span><span>{get_status_value('verify')}</span>
+            <span style={{ marginRight: "20px" }}>状态检验</span><span>{get_status_value('verify')}</span>
           </Row>
         </Modal>
       </span>

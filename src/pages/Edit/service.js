@@ -3,7 +3,7 @@ export const createProject = (data, cb) => {
     const callback = cb;
     fetchJson({
         success: (res) => {
-            if(cb){
+            if (cb) {
                 callback(res);
             }
             // dispatch({
@@ -15,7 +15,7 @@ export const createProject = (data, cb) => {
         url: '/api/v1/project/create',
         data: {
             token: window.sessionStorage.getItem('token'),
-            data: {...data}
+            data: { ...data }
         }
     })
 }
@@ -24,7 +24,7 @@ export const editProject = (data, cb) => {
     const callback = cb;
     fetchJson({
         success: (res) => {
-            if(cb){
+            if (cb) {
                 callback(res);
             }
             // dispatch({
@@ -36,7 +36,7 @@ export const editProject = (data, cb) => {
         url: '/api/v1/project/edit',
         data: {
             token: window.sessionStorage.getItem('token'),
-            data: {...data}
+            data: { ...data }
         }
     })
 }

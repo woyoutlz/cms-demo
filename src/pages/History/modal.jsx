@@ -33,7 +33,7 @@ class PermissionModal extends React.Component {
     })
     let out = Object.assign(this.state)
     delete out.visible
-    this.props.cb(this.props.datas,out)
+    this.props.cb(this.props.datas, out)
   }
   handleCancel() {
     this.setState({
@@ -43,7 +43,7 @@ class PermissionModal extends React.Component {
   componentWillReceiveProps(n) {
 
   }
-  handleInput(key,e){
+  handleInput(key, e) {
     let cool = {}
     cool[key] = e.target.value
     this.setState(cool)
@@ -59,8 +59,8 @@ class PermissionModal extends React.Component {
           onCancel={this.handleCancel.bind(this)}
         >
           <Row>
-            {this.props.datas.map(x => <Col span={6} key={this.props.name+x.key}>
-              <Input  defaultValue="" placeholder={x.name} onChange={this.handleInput.bind(this,x.key)}  onBlur={this.getReason} />
+            {this.props.datas.map(x => <Col span={6} key={this.props.name + x.key}>
+              <Input defaultValue="" placeholder={x.name} onChange={this.handleInput.bind(this, x.key)} onBlur={this.getReason} />
             </Col>)}
           </Row>
         </Modal>

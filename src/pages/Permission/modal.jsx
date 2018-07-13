@@ -33,7 +33,7 @@ class PermissionModal extends React.Component {
     })
     let out = Object.assign(this.state)
     delete out.visible
-    this.props.cb(this.props.datas,out)
+    this.props.cb(this.props.datas, out)
   }
   handleCancel() {
     this.setState({
@@ -43,20 +43,20 @@ class PermissionModal extends React.Component {
   componentWillReceiveProps(n) {
 
   }
-  handleInput(key,e){
+  handleInput(key, e) {
     let cool = {}
     cool[key] = e.target.value
     this.setState(cool)
   }
-  handleSelect(key,v){
+  handleSelect(key, v) {
     let cool = {}
     cool[key] = v
     this.setState(cool)
   }
   render() {
     return (
-      <Col span={3}>
-        <Button type="primary" onClick={this.showModal.bind(this)}>{this.props.name}</Button>
+      <span span={3}>
+        <Button onClick={this.showModal.bind(this)}>{this.props.name}</Button>
         <Modal
           title="Basic Modal"
           visible={this.state.visible}
@@ -65,22 +65,22 @@ class PermissionModal extends React.Component {
         >
           <Row>
             {this.props.datas.map(x => {
-              if (x.type == "input"){
-                return <Col span={6} key={this.props.name+x.key}>
-                  <Input  defaultValue="" placeholder={x.name} onChange={this.handleInput.bind(this,x.key)}  onBlur={this.getReason} />
+              if (x.type == "input") {
+                return <Col span={6} key={this.props.name + x.key}>
+                  <Input defaultValue="" placeholder={x.name} onChange={this.handleInput.bind(this, x.key)} onBlur={this.getReason} />
                 </Col>
               }
-              if (x.type == "select"){
-              return <Col span={6} key={this.props.name+x.key}>
-                  <Select  style={{ width: 120 }} placeholder={x.name} onChange={this.handleSelect.bind(this,x.key)} >
-                      {x.type_msg.map(s=><Option key={this.props.name+x.key+s} value={s}>{s}</Option>)}
-                    </Select>
+              if (x.type == "select") {
+                return <Col span={6} key={this.props.name + x.key}>
+                  <Select style={{ width: 120 }} placeholder={x.name} onChange={this.handleSelect.bind(this, x.key)} >
+                    {x.type_msg.map(s => <Option key={this.props.name + x.key + s} value={s}>{s}</Option>)}
+                  </Select>
                 </Col>
               }
             })}
           </Row>
         </Modal>
-      </Col>
+      </span>
     );
   }
 }

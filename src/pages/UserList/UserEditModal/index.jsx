@@ -67,7 +67,7 @@ class PageIn extends React.Component {
   render() {
     return (
       <div>
-        <a href="javascript:;" > <span type="primary" onClick={this.showModal.bind(this)}>Open</span> 
+        <a href="javascript:;" > <span type="primary" onClick={this.showModal.bind(this)}>Open</span>
         </a>
         <Modal
           title="Basic Modal"

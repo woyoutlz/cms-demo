@@ -3,7 +3,7 @@ export const login = (account, password, cb) => {
     const callback = cb;
     fetchJson({
         success: (res) => {
-            if(cb){
+            if (cb) {
                 callback(res);
             }
             // dispatch({

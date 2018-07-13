@@ -90,8 +90,8 @@ class UserList extends React.Component {
       "user_id": data.record.user_id,
       "project_id": data.record.project_id,
       "memo": data.reason
-    },res=>{
-      if(res.code==0){
+    }, res => {
+      if (res.code == 0) {
         self.props.actions.getUserList(self.props.match.params);
       }
     })
