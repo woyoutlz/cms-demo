@@ -25,7 +25,7 @@ class PageIn extends React.Component {
   componentDidMount() {
     console.log("aaa")
     let token = window.sessionStorage.getItem("token")
-    if (!token){
+    if (!token) {
       console.log("aaa")
       this.props.history.push('/')
     }
@@ -78,6 +78,7 @@ class PageIn extends React.Component {
               <Route exact={true} path="/projects/userlist/:id" component={UserList} />
               <Route exact={true} path="/projects/projects" component={DragTable} />
               <Route exact={true} path="/projects/add" component={Edit} />
+              <Route exact={true} path="/projects/copy/:copy_from" component={Edit} />
             </div>
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>

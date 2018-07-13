@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Input, Button ,notification,BackTop} from 'antd';
+import { Form, Input, Button, notification, BackTop } from 'antd';
 // import * as getTradingPairFormAction from 'src/actions/getTradingPairFormAction.js'; 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -31,6 +31,20 @@ class RegistrationForm extends React.Component {
         let project_obj = res.result.data[0]
         self.setState({ old_project: project_obj })
       })
+    } else if (this.props.match.params.copy_from) {
+      //edit
+      this.setState({ type: "copy" })
+      let self = this
+      api_post('/api/v1/project/list', {
+        data: {
+          query: {
+            id: this.props.match.params.copy_from
+          }
+        }
+      }, true, res => {
+        let project_obj = res.result.data[0]
+        self.setState({ old_project: project_obj })
+      })
     } else {
       this.setState({ type: "add" })
     }
@@ -39,10 +53,10 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        values = _.pickBy(values,(v)=>{
+        values = _.pickBy(values, (v) => {
           return v && v.length > 0
         });
-        console.log("submit",values)
+        console.log("submit", values)
         console.log(this.props.match.params.id);
         if (this.props.match.params.id) {
           values.id = this.props.match.params.id;
@@ -51,7 +65,7 @@ class RegistrationForm extends React.Component {
           editProject(values, res => {
             if (res.code == 0) {
               this.props.history.push('/projects')
-            }else{
+            } else {
               notification["error"]({
                 message: 'error',
                 description: res.result,
@@ -63,7 +77,7 @@ class RegistrationForm extends React.Component {
             console.log(res)
             if (res.code == 0) {
               this.props.history.push('/projects')
-            }else{
+            } else {
               notification["error"]({
                 message: 'error',
                 description: res.result,
@@ -97,20 +111,24 @@ class RegistrationForm extends React.Component {
     if (!tradingForm) {
       tradingForm = {}
     }
-    function get_project_value(name) {
+    function get_project_value(name, is_use_desc = true) {
       if (!self.state.old_project || !self.state.old_project[name]) {
         // name + "," + 
-        let typemsg = op_project[name].type||''
-        if (op_project[name].type === "string_date"){
+        let typemsg = op_project[name].type || ''
+        if (op_project[name].type === "string_date") {
           typemsg = 'YYYY-MM-DD HH:mm:ss'
         }
         let descmsg = op_project[name].desc || ''
-        let msg_desc = _.filter([typemsg,descmsg],i=>{
+        let msg_desc = _.filter([typemsg, descmsg], i => {
           return !!i
         }).join(",")
-        return msg_desc
+        if (is_use_desc){
+          return msg_desc
+        }else{
+          return null
+        }
       }
-      return self.state.old_project[name]
+      return self.state.old_project[name].toString()
     }
     function item_func(name) {
       if (!op_project[name].display) {
@@ -125,16 +143,16 @@ class RegistrationForm extends React.Component {
       </FormItem>
     }
     function is_string_date(rule, value, callback) {
-      if(value ==='Invalid date'){
+      if (value === 'Invalid date') {
         callback(value)
-      }else{
+      } else {
         callback()
       }
     }
     function fieldDecorator(name) {
       let readonly = false
       if (op_project[name].op) {
-        if (self.state.old_project) {
+        if (self.state.old_project && self.state.type == 'edit') {
           //edit
           if (op_project[name].op.indexOf('U') === -1) {
             readonly = true
@@ -148,12 +166,12 @@ class RegistrationForm extends React.Component {
         // op_project[name].op.in
       }
       let rules = []
-      if (op_project[name].op_required && !self.state.old_project) {
+      if (op_project[name].op_required && self.state.type !== 'edit') {
         let required_msg = op_project[name].display + '必填'
         rules.push({
           required: true, message: required_msg
         })
-      }else{
+      } else {
         rules.push({
           required: false
         })
@@ -162,7 +180,7 @@ class RegistrationForm extends React.Component {
         let type_msg = op_project[name].display + '是数字'
         rules.push({
           type: 'number', message: type_msg, transform(value) {
-            if (!value){
+            if (!value) {
               value = 1
             }
             return Number(value);
@@ -179,19 +197,25 @@ class RegistrationForm extends React.Component {
         let type_msg = op_project[name].display + '是YYYY-MM-DD HH:mm:ss格式,例:2018-05-08 20:00:00'
         rules.push({
           validator: is_string_date,
-          message:type_msg,
+          message: type_msg,
           transform(value) {
             return moment(value).format("YYYY-MM-DD HH:mm:ss")
           }
         })
       }
-      if (readonly){
+      if (readonly) {
         return <span>{get_project_value(name)}</span>
-      }else{
-        return getFieldDecorator(name, {
-          rules: rules,
-          initialValue: tradingForm.name
-        })(
+      } else {
+        let option = {
+          rules: rules
+        }
+        if (self.state.type === "copy") {
+          let init_value = get_project_value(name,false)
+          if (init_value){
+            option.initialValue = init_value
+          }
+        }
+        return getFieldDecorator(name, option)(
           <Input placeholder={get_project_value(name)} />
         )
       }
@@ -249,7 +273,7 @@ class RegistrationForm extends React.Component {
         <Button onClick={this.cancel}>Cancel</Button>
         <Button type="primary" htmlType="submit">submit</Button>
         {/* </FormItem> */}
-        <BackTop/>
+        <BackTop />
       </Form>
     );
   }

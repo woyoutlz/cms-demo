@@ -49,5 +49,11 @@ export const controll_types = {
     "name": "score",
     "type": "input",
     "path": ["data", "score"]
+  },  
+  "show_parent": {
+    "name": "parent",
+    "type": "input",
+    "path": ["data", "parent"]
   }
+
 }
