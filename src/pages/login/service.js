@@ -11,8 +11,8 @@ export const login = (account, password, cb) => {
             //     payload: res
             // })
         },
-        type: 'POST',
-        url: '/api/account/login',
+        type: 'GET',
+        url: 'http://127.0.0.1:3001/api/users',
         data: {
             account: account,
             password: password
