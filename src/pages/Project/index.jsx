@@ -12,6 +12,7 @@ import { adminService } from 'src/pages/Permission/service.js'
 import { controll_types } from 'src/pages/Permission/inputs.js'
 import { api_post } from 'src/utils/fetch.js';
 import { api_get } from 'src/utils/fetch.js';
+// import EditModal from 'src/pages/EditModal';
 import _ from 'lodash'
 class Project extends React.Component {
   constructor(props) {
@@ -73,6 +74,7 @@ class Project extends React.Component {
   }
 
   createLottery = () => {
+
     // this.props.history.push('/projects/add')
   }
   deleteProject = (id) => {
@@ -126,6 +128,9 @@ class Project extends React.Component {
           dataSource={data} 
           bordered 
           pagination={{ pageSize: 10 }} 
+        />
+        <ConfirmModal
+          name='创建用户'
         />
       </div>
     );
