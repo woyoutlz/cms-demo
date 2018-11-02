@@ -8,13 +8,13 @@ import { BrowserRouter as Router, Route, Link, ConnectedRouter } from "react-rou
 import bundle from '../../Bundle';
 const { Header, Content, Footer, Sider } = Layout;
 const Deomo = bundle(() => import('../Project/index'));
-const Permission = bundle(() => import('../Permission/index'));
-const UIShow = bundle(() => import('../UIShow/index'));
-const Edit = bundle(() => import('../Edit/index'));
-const UserList = bundle(() => import('../UserList/index'));
-const History = bundle(() => import('../History/index'));
-const Trade = bundle(() => import('../Trade/index'));
-const DragTable = bundle(() => import('../DragTable'));
+// const Permission = bundle(() => import('../Permission/index'));
+// const UIShow = bundle(() => import('../UIShow/index'));
+// const Edit = bundle(() => import('../Edit/index'));
+// const UserList = bundle(() => import('../UserList/index'));
+// const History = bundle(() => import('../History/index'));
+// const Trade = bundle(() => import('../Trade/index'));
+// const DragTable = bundle(() => import('../DragTable'));
 class PageIn extends React.Component {
   constructor(props) {
     super(props);
@@ -70,15 +70,15 @@ class PageIn extends React.Component {
           <Content style={{ marginLeft: 200 }}>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               <Route exact={true} path="/projects" component={Deomo} />
-              <Route exact={true} path="/projects/permission" component={Permission} />
+              {/*<Route exact={true} path="/projects/permission" component={Permission} />
               <Route exact={true} path="/projects/show" component={UIShow} />
-              <Route exact={true} path="/projects/history" component={History} />
-              <Route exact={true} path="/projects/trade" component={Trade} />
-              <Route exact={true} path="/projects/edit/:id" component={Edit} />
-              <Route exact={true} path="/projects/userlist/:id" component={UserList} />
-              <Route exact={true} path="/projects/projects" component={DragTable} />
-              <Route exact={true} path="/projects/add" component={Edit} />
-              <Route exact={true} path="/projects/copy/:copy_from" component={Edit} />
+              <Route exact={true} path="/projects/history" component={History} />*/}
+              {/*<Route exact={true} path="/projects/trade" component={Trade} />*/}
+              {/*<Route exact={true} path="/projects/edit/:id" component={Edit} />*/}
+              {/*<Route exact={true} path="/projects/userlist/:id" component={UserList} />*/}
+              {/*<Route exact={true} path="/projects/projects" component={DragTable} />*/}
+              {/*<Route exact={true} path="/projects/add" component={Edit} />*/}
+              {/*<Route exact={true} path="/projects/copy/:copy_from" component={Edit} />*/}
             </div>
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>

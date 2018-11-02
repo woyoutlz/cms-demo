@@ -2,7 +2,7 @@ import * as Type from '../constants/ActionType.js';
 import { fetchJson } from 'src/utils/fetch.js';
 // import { PRODUCT } from 'src/utils/api';
 
-export function getProjectsList(params) {
+export function getLotteryList(params) {
     return dispatch => {
         // dispatch({
         //     payload: {a: 2, b: 3},
@@ -20,23 +20,23 @@ export function getProjectsList(params) {
                 // }
                 dispatch({
                     type: Type.LIST,
-                    payload: res.result
+                    payload: res
                 })
             },
-            type: 'POST',
-            url: '/api/v1/project/list',
+            type: 'GET',
+            url: '/api/lotteryForAdmin/list',
             data: {
-                token: window.sessionStorage.getItem('token'),
-                data: {
-                    page: 1,
-                    limit: 100,
-                    "order_by": "created_at",
-                    "asc": false,
-                },
-                control:{
-                    limit:100,
-                    sort:{timestamp:-1}
-                }
+                // token: window.sessionStorage.getItem('token'),
+                // data: {
+                //     page: 1,
+                //     limit: 100,
+                //     "order_by": "created_at",
+                //     "asc": false,
+                // },
+                // control:{
+                //     limit:100,
+                //     sort:{timestamp:-1}
+                // }
             }
         })
     }
