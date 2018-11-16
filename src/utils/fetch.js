@@ -48,6 +48,7 @@ export const fetchJson = (options) => {
         method: type || 'get',
         credentials: 'include',
         headers: options.headers || {
+            'x-access-token': window.sessionStorage.getItem('token'),
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
@@ -57,6 +58,7 @@ export const fetchJson = (options) => {
         // let params = Object.keys(data).map(function (key) {
         //     return encodeURIComponent(key) + "=" + encodeURIComponent(data[key]);
         // }).join("&");
+        console.log(data);
         opts.body = JSON.stringify(data);
     }
     var newUrl = url;

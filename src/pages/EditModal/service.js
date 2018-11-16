@@ -20,6 +20,33 @@ export const createProject = (data, cb) => {
     })
 }
 
+export const demoFunc = () => {
+    const data = {userId: 1};
+    fetchJson({
+        success: (res) => {
+            console.log('editLottery', res);
+            // console.log(2, res)
+            // const data = res.result.data || [];
+            // const newData = data.filter((e) => e.id == params.id);
+            // dispatch({
+            //     type: Type.GET_FORM,
+            //     payload: { data: newData }
+            // })
+        },
+        type: 'GET',
+        url: '/api/lottery/lotteryGet',
+        data: data,
+        // data: {
+        //     token: window.sessionStorage.getItem('token'),
+        //     data: {
+        //         query: {
+        //             id: params.id
+        //         }
+        //     }
+        // }
+    });
+}
+
 export const editProject = (data, cb) => {
     const callback = cb;
     fetchJson({

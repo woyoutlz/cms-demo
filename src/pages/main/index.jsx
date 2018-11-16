@@ -10,7 +10,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const Deomo = bundle(() => import('../Project/index'));
 // const Permission = bundle(() => import('../Permission/index'));
 // const UIShow = bundle(() => import('../UIShow/index'));
-// const Edit = bundle(() => import('../Edit/index'));
+const Edit = bundle(() => import('../EditModal/index'));
 // const UserList = bundle(() => import('../UserList/index'));
 // const History = bundle(() => import('../History/index'));
 // const Trade = bundle(() => import('../Trade/index'));
@@ -47,9 +47,9 @@ class PageIn extends React.Component {
           <div className="logo" />
           <Menu theme="dark" selectedKeys={[pathname]} mode="inline">
             <Menu.Item key="/projects">
-              <Link to="/projects">Home</Link>
+              <Link to="/projects">抽奖</Link>
             </Menu.Item>
-            <Menu.Item key="/permission">
+            {/*<Menu.Item key="/permission">
               <Link to="/projects/permission" >permission</Link>
             </Menu.Item>
             <Menu.Item key="/show">
@@ -63,7 +63,7 @@ class PageIn extends React.Component {
             </Menu.Item>
             <Menu.Item key="/logout">
               <a onClick={this.logout.bind(this)}>退出</a>
-            </Menu.Item>
+            </Menu.Item>*/}
           </Menu>
         </Sider>
         <Layout>
@@ -74,10 +74,10 @@ class PageIn extends React.Component {
               <Route exact={true} path="/projects/show" component={UIShow} />
               <Route exact={true} path="/projects/history" component={History} />*/}
               {/*<Route exact={true} path="/projects/trade" component={Trade} />*/}
-              {/*<Route exact={true} path="/projects/edit/:id" component={Edit} />*/}
+              <Route exact={true} path="/projects/edit/:id" component={Edit} />
               {/*<Route exact={true} path="/projects/userlist/:id" component={UserList} />*/}
               {/*<Route exact={true} path="/projects/projects" component={DragTable} />*/}
-              {/*<Route exact={true} path="/projects/add" component={Edit} />*/}
+              <Route exact={true} path="/projects/add" component={Edit} />
               {/*<Route exact={true} path="/projects/copy/:copy_from" component={Edit} />*/}
             </div>
           </Content>

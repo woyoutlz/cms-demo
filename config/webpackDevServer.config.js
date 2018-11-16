@@ -82,7 +82,7 @@ module.exports = function(proxy, allowedHost) {
     public: allowedHost,
     proxy:
       {
-        '/api/**': {
+        '/lotteryForAdmin/**': {
             target: 'http://127.0.0.1:3000',
             
             // target: 'http://106.14.159.224:3049',

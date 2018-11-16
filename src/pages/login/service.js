@@ -1,5 +1,5 @@
 import { fetchJson } from 'src/utils/fetch.js';
-export const login = (account, password, cb) => {
+export const login = (userName, password, cb) => {
     const callback = cb;
     fetchJson({
         success: (res) => {
@@ -11,10 +11,10 @@ export const login = (account, password, cb) => {
             //     payload: res
             // })
         },
-        type: 'GET',
-        url: 'http://127.0.0.1:3001/api/users',
+        type: 'POST',
+        url: '/lotteryForAdmin/login',
         data: {
-            account: account,
+            userName: userName,
             password: password
         }
     })

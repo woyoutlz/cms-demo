@@ -2,18 +2,20 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
-import { Table, Icon, Divider, Button, Row, Col, notification } from 'antd';
+import { Table, Icon, Divider, Button, Row, Col, notification, Layout } from 'antd';
 import * as lotteryListActions from 'src/actions/lotteryListActions.js';
 import { deleteProjectServiece } from './service';
 import { op_project } from 'src/constants/project_struct.js'
-import ConfirmModal from './modal'
+// import ConfirmModal from './modal'
 import PermissionModel from 'src/pages/Permission/modal'
 import { adminService } from 'src/pages/Permission/service.js'
 import { controll_types } from 'src/pages/Permission/inputs.js'
 import { api_post } from 'src/utils/fetch.js';
 import { api_get } from 'src/utils/fetch.js';
+import moment from 'moment';
 // import EditModal from 'src/pages/EditModal';
-import _ from 'lodash'
+import _ from 'lodash';
+const { Header, Content, Footer, Sider } = Layout;
 class Project extends React.Component {
   constructor(props) {
     super(props);
@@ -58,10 +60,29 @@ class Project extends React.Component {
       title: 'banner路径',
       dataIndex: 'imgUrl',
       key: 'imgUrl',
+      render: (text, record) => (
+        <span>
+          <img src={`${record.imgUrl}`} width="100" />
+        </span>
+      )
     }, {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
+    },{
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <span>
+          <Link to={`/projects/edit/${record.lotteryId}`}>编辑抽奖</Link>
+          {/*<ConfirmModal
+            name='编辑抽奖'
+            id={record.lotteryId}
+          />*/}
+          <Divider type="vertical" />
+          <a href="javascript:;" onClick={this.delLottery.bind(this, record.lotteryId)}>删除</a>
+        </span>
+      ),
     }];
     
     this.state = {
@@ -74,13 +95,16 @@ class Project extends React.Component {
   }
 
   createLottery = () => {
-
-    // this.props.history.push('/projects/add')
+    this.props.history.push('/projects/add')
   }
   deleteProject = (id) => {
     if (window.confirm('确认删除吗?')) {
       deleteProjectServiece({ id })
     }
+  }
+
+  delLottery = (id) => {
+    this.props.actions.delLotteryByLotteryId(id);
   }
   // change_show() {
   //   this.setState({
@@ -99,13 +123,18 @@ class Project extends React.Component {
   //     sortedInfo: sorter,
   //   });
   // }
+  // initialValue: moment(startTime).format("YYYY-MM-DD HH:mm:ss")
   render() {
     const data = this.props.data;
     data.forEach((e, i) => {
       e.key = `project${i}`;
+      e.startTime = moment(e.startTime).format("YYYY-MM-DD HH:mm:ss");
+      e.endTime = moment(e.endTime).format("YYYY-MM-DD HH:mm:ss")
     });
     console.log(data);
     return (
+      <Content>
+
       <div className="page-in">
         <Row>
           <Col span={3}>
@@ -127,12 +156,13 @@ class Project extends React.Component {
           columns={this.state.columns} 
           dataSource={data} 
           bordered 
-          pagination={{ pageSize: 10 }} 
+          pagination={false} 
         />
-        <ConfirmModal
-          name='创建用户'
-        />
+        {/*<ConfirmModal
+          name='编辑抽奖'
+        />*/}
       </div>
+      </Content>
     );
   }
 }

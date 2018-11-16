@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as React from 'react';
 import { Modal, Button, Select, Divider, Col, Row } from 'antd';
 import { api_post } from 'src/utils/fetch.js';
 import EditModal from 'src/pages/EditModal';
+import * as lotteryListActions from 'src/actions/lotteryListActions.js';
 const Option = Select.Option;
-// import * as projectsListActions from 'src/actions/projectsListActions.js';
+
 
 class PageIn extends React.Component {
   constructor(props) {
@@ -21,6 +23,10 @@ class PageIn extends React.Component {
     this.setState({
       visible: true
     });
+    if (this.props.id) {
+      this.props.actions.getLotteryDetail(this.props.id);
+    }
+
     // console.log(this.props.datas)
     // api_post("/api/v1/project/status",
     //   {
@@ -44,12 +50,10 @@ class PageIn extends React.Component {
     console.log('focus');
   }
   handleOk() {
+    console.log(this)
     this.setState({
       visible: false
-    })
-    let out = Object.assign(this.state)
-    delete out.visible
-    this.props.cb && this.props.cb(this.props.datas, out)
+    });
   }
   handleCancel() {
     this.setState({
@@ -72,18 +76,22 @@ class PageIn extends React.Component {
       }
     }
     return (
-      <span span={3}>
+      <div>
         <a href="javascript:;" onClick={this.showModal.bind(this)}>状态</a>
         <Divider type="vertical" />
         <Modal
           title="Basic Modal"
           visible={this.state.visible}
           onCancel={this.handleCancel.bind(this)}
+          onOk={this.handleOk.bind(this)}
         >
-        <EditModal />
+        <EditModal
+          ref="editModal"
+          id={this.props.id}
+        />
           
         </Modal>
-      </span>
+      </div>
     );
   }
 }
@@ -95,7 +103,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    // actions: bindActionCreators(projectsListActions, dispatch)
+    actions: bindActionCreators(lotteryListActions, dispatch)
   }
 }
 
