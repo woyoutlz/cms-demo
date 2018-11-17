@@ -81,6 +81,8 @@ class Project extends React.Component {
           />*/}
           <Divider type="vertical" />
           <a href="javascript:;" onClick={this.delLottery.bind(this, record.lotteryId)}>删除</a>
+          <Divider type="vertical" />
+          <a href="javascript:;" onClick={this.createRobort.bind(this, record.lotteryId)}>添加机器人</a>
         </span>
       ),
     }];
@@ -101,6 +103,10 @@ class Project extends React.Component {
     if (window.confirm('确认删除吗?')) {
       deleteProjectServiece({ id })
     }
+  }
+
+  createRobort = (id) => {
+    this.props.actions.createRobort(id);
   }
 
   delLottery = (id) => {

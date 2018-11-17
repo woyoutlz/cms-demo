@@ -42,6 +42,44 @@ export function getLotteryList(params) {
     }
 }
 
+export function createRobort(lotteryId) {
+    return dispatch => {
+        // dispatch({
+        //     payload: {a: 2, b: 3},
+        //     type: Type.DEMO
+        // })
+        // dispatch({
+        //     payload: {a: 2, b: 3},
+        //     type: Type.DEMO
+        // })
+        fetchJson({
+            success: (res) => {
+                console.log(res);
+                // if (!res || !res.length) {
+                //     // StaticToast.error('暂无数据');
+                //     return false;
+                // }
+                // dispatch({
+                //     type: Type.LIST,
+                //     payload: res
+                // })
+            },
+            type: 'POST',
+            url: '/lotteryForAdmin/createRobort',
+            data: {
+                // token: window.sessionStorage.getItem('token'),
+
+                lotteryId: lotteryId,
+                robortAccount: 50
+                // control:{
+                //     limit:100,
+                //     sort:{timestamp:-1}
+                // }
+            }
+        })
+    }
+}
+
 export const editLottery = (values) => {
     return dispatch => {
         fetchJson({
