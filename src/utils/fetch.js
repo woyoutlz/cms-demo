@@ -39,6 +39,13 @@ export const api_get = (url, data, cb) => {
     })
 }
 export const fetchJson = (options) => {
+    if(
+        !window.sessionStorage.getItem('token') &&
+        window.location.pathname.indexOf('/login') < 0
+    ){
+        window.location.replace('/login');
+        return false;
+    }
     const { url, type, data, ...others } = options;
 
     isFlag = true;
@@ -76,12 +83,53 @@ export const fetchJson = (options) => {
         .catch(error => errorHandler(error, opts))
 };
 
+export const fetchFile = (options) => {
+    // if(
+    //     !window.sessionStorage.getItem('token') &&
+    //     window.location.pathname.indexOf('/login') < 0
+    // ){
+    //     window.location.replace('/login');
+    //     return false;
+    // }
+    const { url, type, data, ...others } = options;
+
+    isFlag = true;
+
+    let opts = {
+        ...others,
+        method: 'POST',
+        headers: {
+            'x-access-token': window.sessionStorage.getItem('token')
+        },
+        body: data
+    };
+    // if (['POST', 'PUT'].indexOf(opts.method.toUpperCase()) >= 0) {
+        // let params = Object.keys(data).map(function (key) {
+        //     return encodeURIComponent(key) + "=" + encodeURIComponent(data[key]);
+        // }).join("&");
+        // console.log(data, 'ddddddddddd');
+        // opts.body = data;
+    // }
+    var newUrl = url;
+
+
+    console.log(newUrl, opts, 'ddddddddddd');
+    fetch(newUrl, opts)
+        .then(resData => toJson(resData, opts))
+        .catch(error => errorHandler(error, opts))
+        .then(resData => resHandler(resData, opts))
+        .catch(error => errorHandler(error, opts))
+};
+
 function toJson(resp, options) {
     return resp.json();
-
-
 }
 function resHandler(resData, options) {
+    if(resData.code==3){
+        window.location.replace('/login');
+        window.sessionStorage.clear();
+        return false;
+    }
     options.success(resData)
 }
 function errorHandler(error, options, status) {

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as lotteryListActions from 'src/actions/lotteryListActions.js';
 
-import { createProject, editProject, demoFunc } from './service';
+import { uploadImgArray } from './service';
 import { api_post } from 'src/utils/fetch.js';
 
 import moment from 'moment';
@@ -20,12 +20,15 @@ class RegistrationForm extends React.Component {
       lotteryDetail: this.props.lotteryDetail,
       confirmDirty: false,
       autoCompleteResult: [],
+      uploading: false,
+      fileList: [],
+      fileUrls: []
     };
   }
   componentDidMount() {
     const id = this.props.match.params.id;
     if (id) {
-      this.props.actions.getLotteryDetail(id);
+     this.props.actions.getLotteryDetail(id);
     }
     // if (this.props.match.params.id) {
     //   //edit
@@ -81,6 +84,9 @@ class RegistrationForm extends React.Component {
         sendData.startTime = sendData.startTime.format('YYYY-MM-DD HH:mm:ss');
         sendData.endTime = sendData.endTime.format('YYYY-MM-DD HH:mm:ss');
         sendData.status = status;
+        // sendData.detailImg = this.state.fileUrls;
+        // sendData.detailImg = this.props.detailImg.detailImg;
+        console.log(sendData, 'ssssssssssssss');
         if (id) {
           sendData.lotteryId = id;
           this.props.actions.editLottery(sendData);
@@ -126,22 +132,24 @@ class RegistrationForm extends React.Component {
     this.props.history.push(`/projects`)
   }
   componentWillReceiveProps(n) {
-    this.state.lotteryDetail = n.lotteryDetail;
-    console.log(n.lotteryDetail.openType==2, 'fffffffff')
-    this.state.needAccountForType = (n.lotteryDetail.openType==2)
+    // this.state.lotteryDetail = n.lotteryDetail;
+    // console.log(n.lotteryDetail.openType==2, 'fffffffff')
+    // this.state.needAccountForType = (n.lotteryDetail.openType==2)
   }
 
   handleOpenTypeChange = (value) => {
-    if(value==1){
-      this.setState({
-        needAccountForType: false
-      });
-    }else{
-      this.setState({
-        needAccountForType: true
-      });
-    }
+      // this.props.actions.changeOpenType(value);
   }
+  
+  normFileArray = (e) => {
+     console.log('Upload event:', e);
+     console.log(e);
+     if (Array.isArray(e)) {
+       console.log(e)
+		return e;
+     } 
+  }
+
 
   normFile = (e) => {
     // console.log('Upload event:', e);
@@ -155,6 +163,63 @@ class RegistrationForm extends React.Component {
       return res.data;
     }
     
+  }
+  normFile2 = (e) => {
+    // console.log('Upload event:', e);
+    // console.log(e);
+    // console.log(e, 'cccccccccccccccccccccc')
+    // if (Array.isArray(e)) {
+    //   return e;
+    // }
+    let tempFilesArray = [];
+      e.fileList.map((files)=>{
+        console.log(files.response,'fffffffff')
+        if(files.response){
+          tempFilesArray.push(files.response.data);
+        }
+        
+      })
+    return tempFilesArray;
+    // const res = e.file.response;
+    // if(res){
+    //   return res.data;
+    // }
+    
+  }
+ //  uploadImgArray = (e) => {
+	// 	console.log(e);
+	// }
+
+  handleUploads = (e) => {
+
+    e.preventDefault()
+    const { fileList } = this.state;
+    const formData = new FormData();
+    console.log(formData, 'formData')
+    fileList.forEach((file) => {
+      console.log(file)
+      formData.append('files', file);
+    });
+    this.setState({
+      uploading: true,
+    });
+    this.props.actions.uploadImgArray(formData);
+    // uploadImgArray(formData, this.resetForm);
+  }
+
+  resetForm = (e) => {
+    let data = e.data;
+    console.log(data, this);
+    this.setState({
+      fileUrls: e.data
+    });
+  }
+
+  onChangeDemo = (e) => {
+    console.log(e, 'eeeeeeeeee');
+  }
+  onChangeDemo2 = (e) => {
+    console.log(e, 'eeeeeeeeee');
   }
 
   statusChange = (e) => {
@@ -177,6 +242,7 @@ class RegistrationForm extends React.Component {
 
 
     const { getFieldDecorator } = this.props.form;
+
     const { 
       name, 
       lotteryOrder,
@@ -190,9 +256,14 @@ class RegistrationForm extends React.Component {
       imgUrl,
       status,
       sponcerId,
-    } = this.state.lotteryDetail;
-    console.log(imgUrl, 'iiiiiiiiiiiiii');
-    const needAccountForType = this.state.needAccountForType;
+      appId,
+      path,
+      // detailImg,
+      touchPaste,
+      rewardDesc,
+			rewardImgDesc
+    } = this.props.lotteryDetail;
+    // const needAccountForType = this.state.needAccountForType;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -232,6 +303,28 @@ class RegistrationForm extends React.Component {
         md: { span: 8},
       },
     };
+	const fileList = this.state.fileList || [];
+  // const { detailImg } = this.props.detailImg;
+  const uploading = this.state.uploading;
+	const uploadImgArrayProps = {
+		onRemove: (file) => {
+        this.setState((state) => {
+          const index = state.fileList.indexOf(file);
+          const newFileList = state.fileList.slice();
+          newFileList.splice(index, 1);
+          return {
+            fileList: newFileList,
+          };
+        });
+      },
+      beforeUpload: (file) => {
+        this.setState(state => ({
+          fileList: [...state.fileList, file],
+        }));
+        return false;
+      },
+      fileList,
+	}
     return (
       <Form onSubmit={this.handleSubmit}>
         
@@ -278,7 +371,7 @@ class RegistrationForm extends React.Component {
           <Input placeholder="rewardAccount" />
         )}
         </FormItem>
-
+        {/*onChange={this.handleOpenTypeChange}*/}
         <FormItem
           {...timePickerLayout}
           label="开始时间"
@@ -317,8 +410,9 @@ class RegistrationForm extends React.Component {
           }],
           initialValue: openType
         })(
+
           <Select
-            onChange={this.handleOpenTypeChange}
+            
           >
             <Option value={1} >按照时间开奖</Option>
             <Option value={2}>按照人数开奖</Option>
@@ -326,24 +420,50 @@ class RegistrationForm extends React.Component {
         )}
         </FormItem>
 
-        
-        {
-          needAccountForType?(
+        <FormItem
+          label="appId"
+          {...formItemLayout}
+        >
+        {getFieldDecorator('appId', {
+          rules: [{
+            required: false, message: 'Please input appId',
+          }],
+          initialValue: appId
+        })(
+          <Input placeholder="appId" />
+        )}
+        </FormItem>
+
+        <FormItem
+          label="path"
+          {...formItemLayout}
+        >
+        {getFieldDecorator('path', {
+          rules: [{
+            required: false, message: 'Please input path',
+          }],
+          initialValue: path
+        })(
+          <Input placeholder="path" />
+        )}
+        </FormItem>
+        {/*
+          needAccountForType?(*/}
             <FormItem
               label="达到人数开奖"
               {...formItemLayout}
             >
             {getFieldDecorator('countForType', {
               rules: [{
-                required: true, message: 'Please input name',
+                required: false, message: 'Please input name',
               }],
               initialValue: countForType
             })(
               <Input placeholder="countForType" />
             )}
             </FormItem>
-          ):null
-        }
+          {/*):null
+        }*/}
          
         <FormItem
           label="赞助商编号"
@@ -386,6 +506,105 @@ class RegistrationForm extends React.Component {
           <Input placeholder="sponcerDesc" />
         )}
         </FormItem>
+		
+		<FormItem
+          label="奖品说明"
+          {...formItemLayout}
+        >
+        {getFieldDecorator('rewardDesc', {
+          rules: [{
+            required: false, message: 'Please input reward desc' 
+          }],
+          initialValue: rewardDesc
+        })(
+          <Input placeholder="rewardDesc" />
+        )}
+        </FormItem>
+
+<FormItem
+          label="奖品图片说明"
+          {...formItemLayout}
+        >
+        {getFieldDecorator('rewardImgDesc', {
+          rules: [{
+            required: false, message: 'Please input reward img desc' 
+          }],
+          initialValue: rewardImgDesc
+        })(
+          <Input placeholder="rewardImgDesc" />
+        )}
+        </FormItem>
+
+		<FormItem
+          label="一键黏贴"
+          {...formItemLayout}
+        >
+        {getFieldDecorator('touchPaste', {
+          rules: [{
+            required: false, message: 'Please input touch paste' 
+          }],
+          initialValue: touchPaste
+        })(
+          <Input placeholder="touchPaste" />
+        )}
+        </FormItem>
+		{/*<FormItem
+          {...formItemLayout}
+          label="Dragger more images"
+        >
+          <div className="dropbox">
+            {getFieldDecorator('detailImg', {
+              valuePropName: 'file',
+              getValueFromEvent: this.normFileArray,
+              initialValue: detailImg            
+            })(
+              <div>
+             		<Upload.Dragger 
+      					 {...uploadImgArrayProps}
+      			  	>
+                  <p className="ant-upload-drag-icon">
+                    <Icon type="inbox" />
+                  </p>
+                  <p className="ant-upload-text">点击或拖拽上传文件</p>
+                  <p className="ant-upload-hint">支持多个文件上传</p>
+                </Upload.Dragger>
+                <Button
+                  onClick={this.handleUploads}
+                  disabled={fileList.length === 0}
+                  loading={uploading}
+                  style={{ marginTop: 16 }}
+                >
+                  {uploading ? 'Uploading' : 'Start Upload' }
+                </Button>
+              </div>
+            )}
+          </div>
+        </FormItem>*/}
+        <FormItem
+          {...formItemLayout}
+          label="Dragger"
+        >
+          <div className="dropbox">
+            {getFieldDecorator('detailImg', {
+              valuePropName: 'file2',
+              getValueFromEvent: this.normFile2,
+              initialValue: []
+            })(
+              <Upload.Dragger 
+                name="avatar" 
+                method="post" 
+                action="/lotteryForAdmin/uploadImg" 
+                onChange={this.onChangeDemo2}
+              >
+                <p className="ant-upload-drag-icon">
+                  <Icon type="inbox" />
+                </p>
+                <p className="ant-upload-text">点击或拖拽上传文件</p>
+                <p className="ant-upload-hint">支持单文件上传</p>
+              </Upload.Dragger>
+            )}
+          </div>
+        </FormItem>
 
         <FormItem
           {...formItemLayout}
@@ -397,7 +616,12 @@ class RegistrationForm extends React.Component {
               getValueFromEvent: this.normFile,
               initialValue: imgUrl
             })(
-              <Upload.Dragger name="avatar" method="post" action="/lotteryForAdmin/uploadImg">
+              <Upload.Dragger 
+                name="avatar" 
+                method="post" 
+                action="/lotteryForAdmin/uploadImg" 
+                onChange={this.onChangeDemo}
+              >
                 <p className="ant-upload-drag-icon">
                   <Icon type="inbox" />
                 </p>
@@ -432,8 +656,10 @@ const WrappedRegistrationForm = Form.create()(RegistrationForm);
 // export default WrappedRegistrationForm;
 
 function mapStateToProps(state) {
+  console.log(state, 'state');
   return {
     lotteryDetail: state.detailReducer.data,
+    detailImg: state.uploadImgArrayReducer,
     // success: state.postTradingPairFormReducer.success,
     // tradingForm: state.listReducer.data[0] || {}
   }

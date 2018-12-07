@@ -15,6 +15,7 @@ class NormalLoginForm extends React.Component {
     };
   }
   componentDidMount() {
+    window.sessionStorage.clear();
   }
   handleSubmit = (e) => {
     e.preventDefault();

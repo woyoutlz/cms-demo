@@ -1,6 +1,35 @@
 import * as Type from '../constants/ActionType.js';
-import { fetchJson } from 'src/utils/fetch.js';
+import { fetchJson, fetchFile } from 'src/utils/fetch.js';
 // import { PRODUCT } from 'src/utils/api';
+
+export const uploadImgArray = (formData, cb) => {
+	return dispatch => {
+		fetchFile({
+			url: '/lotteryForAdmin/uploadImgArray',
+			success: (res)=>{
+				console.log(res);
+				if(res.code==1){
+					dispatch({
+						payload: res.data,
+						type: Type.UPLOADIMGARRAY
+					})
+				}
+			},
+            data: formData
+		})	
+	}
+//    fetch('/lotteryForAdmin/uploadImgArray', {
+//      method: 'POST',
+//      body: formData
+//    }).then(resData => toJson(resData))
+//      .then((resData) => {
+//        console.log(resData);
+//        if(typeof cb == 'function'){
+//            cb.call(null, resData)
+//        }
+//      })
+}
+
 
 export function getLotteryList(params) {
     return dispatch => {
@@ -24,23 +53,30 @@ export function getLotteryList(params) {
                 })
             },
             type: 'POST',
-            url: '/lotteryForAdmin/list',
-            data: {
-                token: window.sessionStorage.getItem('token'),
-                // data: {
-                //     page: 1,
-                //     limit: 100,
-                //     "order_by": "created_at",
-                //     "asc": false,
-                // },
-                // control:{
-                //     limit:100,
-                //     sort:{timestamp:-1}
-                // }
-            }
+            url: '/lotteryForAdmin/list'
         })
     }
 }
+export function getLotteryListPro(params) {
+    return dispatch => {
+        // dispatch({
+        //     payload: {a: 2, b: 3},
+        //     type: Type.DEMO
+        // })
+        // dispatch({
+        //     payload: {a: 2, b: 3},
+        //     type: Type.DEMO
+        // })
+        fetchJson({
+            success: (res) => {
+
+            },
+            type: 'POST',
+            url: '/lotteryForAdmin/listPro'
+        })
+    }
+}
+
 
 export function createRobort(lotteryId) {
     return dispatch => {
@@ -70,7 +106,7 @@ export function createRobort(lotteryId) {
                 // token: window.sessionStorage.getItem('token'),
 
                 lotteryId: lotteryId,
-                robortAccount: 50
+                robortAccount: 260
                 // control:{
                 //     limit:100,
                 //     sort:{timestamp:-1}
@@ -79,6 +115,49 @@ export function createRobort(lotteryId) {
         })
     }
 }
+export function delRobort(lotteryId) {
+    return dispatch => {
+        // dispatch({
+        //     payload: {a: 2, b: 3},
+        //     type: Type.DEMO
+        // })
+        // dispatch({
+        //     payload: {a: 2, b: 3},
+        //     type: Type.DEMO
+        // })
+        fetchJson({
+            success: (res) => {
+                console.log(res);
+                // if (!res || !res.length) {
+                //     // StaticToast.error('暂无数据');
+                //     return false;
+                // }
+                // dispatch({
+                //     type: Type.LIST,
+                //     payload: res
+                // })
+            },
+            type: 'POST',
+            url: '/lotteryForAdmin/delRobort',
+            data: {
+                // token: window.sessionStorage.getItem('token'),
+
+                lotteryId: lotteryId,
+                // control:{
+                //     limit:100,
+                //     sort:{timestamp:-1}
+                // }
+            }
+        })
+    }
+}
+
+
+// export const changeOpenType = (value) => {
+//     return {
+//         type: Type.CHANGE_OPEN_TYPE,
+//     }
+// }
 
 export const editLottery = (values) => {
     return dispatch => {
@@ -109,7 +188,6 @@ export const editLottery = (values) => {
 }
 
 export const delLotteryByLotteryId = (id) => {
-    console.log(id, 'ddddddddddd');
     return dispatch => {
         fetchJson({
             success: (res) => {
@@ -159,13 +237,17 @@ export function getLotteryDetail(id) {
     return dispatch => {
         fetchJson({
             success: (res) => {
-                console.log(res);
+                console.log(res, 'resres');
                 // console.log(2, res)
                 // const data = res.result.data || [];
                 // const newData = data.filter((e) => e.id == params.id);
                 dispatch({
                     type: Type.GET_FORM,
                     payload: res
+                });
+                dispatch({
+                    type: Type.UPLOADIMGARRAY,
+                    payload: res.data.detailImg
                 })
             },
             type: 'POST',

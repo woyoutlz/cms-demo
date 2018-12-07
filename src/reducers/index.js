@@ -4,13 +4,16 @@ import { routerReducer } from 'react-router-redux';
 import listReducer from './listReducer';
 import userListReducer from './userListReducer';
 import detailReducer from './detailReducer';
-
+import uploadImgArrayReducer from './uploadImgArrayReducer';
+import getUserInfos from './userInfosReducer';
 const rootReducer = combineReducers({
+  getUserInfos,
 	demoReducer,
 	routerReducer,
 	listReducer,
 	userListReducer,
-  detailReducer
+  detailReducer,
+  uploadImgArrayReducer
 });
 
 export default rootReducer

@@ -12,6 +12,10 @@ import { adminService } from 'src/pages/Permission/service.js'
 import { controll_types } from 'src/pages/Permission/inputs.js'
 import { api_post } from 'src/utils/fetch.js';
 import { api_get } from 'src/utils/fetch.js';
+
+import { fetchJson } from 'src/utils/fetch.js';
+
+
 import moment from 'moment';
 // import EditModal from 'src/pages/EditModal';
 import _ from 'lodash';
@@ -57,6 +61,37 @@ class Project extends React.Component {
       dataIndex: 'openTypeAccount',
       key: 'openTypeAccount',
     }, {
+      title: '奖品说明',
+      dataIndex: 'rewardDesc',
+      key: 'rewardDesc',
+    }, {
+      title: '奖品图片说明',
+      dataIndex: 'rewardImgDesc',
+      key: 'rewardImgDesc',
+    }, {
+      title: '点击复制',
+      dataIndex: 'touchPaste',
+      key: 'touchPaste',
+    }, {
+      title: '奖品详情',
+      dataIndex: 'detailImg',
+      key: 'detailImg',
+      render: (text, record) => {
+        return(
+          <span>
+            {
+              record.detailImg?(
+              record.detailImg.map((e, i)=>{
+                return(<img src={e} key={`img${i}`} width="100" />)
+              })
+              ):null
+            }
+
+          </span>
+        )
+        
+      }
+    }, {
       title: 'banner路径',
       dataIndex: 'imgUrl',
       key: 'imgUrl',
@@ -83,6 +118,9 @@ class Project extends React.Component {
           <a href="javascript:;" onClick={this.delLottery.bind(this, record.lotteryId)}>删除</a>
           <Divider type="vertical" />
           <a href="javascript:;" onClick={this.createRobort.bind(this, record.lotteryId)}>添加机器人</a>
+          <Divider type="vertical" />
+          <a href="javascript:;" onClick={this.delRobort.bind(this, record.lotteryId)}>删除机器人</a>
+          
         </span>
       ),
     }];
@@ -104,6 +142,11 @@ class Project extends React.Component {
       deleteProjectServiece({ id })
     }
   }
+  delRobort = (id) => {
+    this.props.actions.delRobort(id);
+
+    
+  }
 
   createRobort = (id) => {
     this.props.actions.createRobort(id);
@@ -112,6 +155,28 @@ class Project extends React.Component {
   delLottery = (id) => {
     this.props.actions.delLotteryByLotteryId(id);
   }
+
+  test = (num) => {
+    console.log(num);
+    num--
+
+    if(num>0){
+      fetchJson({
+        success: (res) => {
+          console.log(res);       
+        },
+        type: 'POST',
+        url: '/lotteryForAdmin/list',
+        data: {
+          token: window.sessionStorage.getItem('token')
+        }
+      })
+      setTimeout(()=>{
+        this.test.call(null, num)
+      },10);
+    }
+  }
+
   // change_show() {
   //   this.setState({
   //     'columns': this.state.columns_2
@@ -130,6 +195,12 @@ class Project extends React.Component {
   //   });
   // }
   // initialValue: moment(startTime).format("YYYY-MM-DD HH:mm:ss")
+
+  getLotteryListTest = () => {
+
+    this.test(1000);
+  }
+
   render() {
     const data = this.props.data;
     data.forEach((e, i) => {
@@ -150,6 +221,13 @@ class Project extends React.Component {
               className="login-form-button" 
               onClick={this.createLottery}
             >Create</Button>
+            <Button 
+              type="primary" 
+              htmlType="submit" 
+              className="login-form-button" 
+              onClick={this.getLotteryListTest}
+            >Test</Button>
+
           </Col>
           {/*<Col span={3}>
             <Button htmlType="submit" className="login-form-button" onClick={this.change_info.bind(this)}>项目信息</Button>

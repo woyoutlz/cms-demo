@@ -6,10 +6,12 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 import { Table, Icon, Divider } from 'antd';
 import { BrowserRouter as Router, Route, Link, ConnectedRouter } from "react-router-dom";
 import bundle from '../../Bundle';
+
 const { Header, Content, Footer, Sider } = Layout;
 const Deomo = bundle(() => import('../Project/index'));
 // const Permission = bundle(() => import('../Permission/index'));
 // const UIShow = bundle(() => import('../UIShow/index'));
+const UserInfos = bundle(() => import('../UserInfos/index'));
 const Edit = bundle(() => import('../EditModal/index'));
 // const UserList = bundle(() => import('../UserList/index'));
 // const History = bundle(() => import('../History/index'));
@@ -49,6 +51,9 @@ class PageIn extends React.Component {
             <Menu.Item key="/projects">
               <Link to="/projects">抽奖</Link>
             </Menu.Item>
+            <Menu.Item key="/userInfos">
+              <Link to="/projects/userInfos">用户信息</Link>
+            </Menu.Item>
             {/*<Menu.Item key="/permission">
               <Link to="/projects/permission" >permission</Link>
             </Menu.Item>
@@ -74,6 +79,7 @@ class PageIn extends React.Component {
               <Route exact={true} path="/projects/show" component={UIShow} />
               <Route exact={true} path="/projects/history" component={History} />*/}
               {/*<Route exact={true} path="/projects/trade" component={Trade} />*/}
+              <Route exact={true} path="/projects/userInfos" component={UserInfos} />
               <Route exact={true} path="/projects/edit/:id" component={Edit} />
               {/*<Route exact={true} path="/projects/userlist/:id" component={UserList} />*/}
               {/*<Route exact={true} path="/projects/projects" component={DragTable} />*/}

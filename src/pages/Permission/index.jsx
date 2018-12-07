@@ -21,7 +21,7 @@ class Permission extends React.Component {
   }
 
   createProject = () => {
-    this.props.history.push('/projects/add')
+    // this.props.history.push('/projects/add')
   }
 
   mapper(data) {

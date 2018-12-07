@@ -24,7 +24,7 @@ class App extends React.Component{
     return (
       <ConnectedRouter history={history}>
       <div className="App">
-        <Route path="/" exact={true} component={Login} />
+        <Route path="/login" exact={true} component={Login} />
         <Route path="/projects" component={Main} />
       </div>
       </ConnectedRouter>
