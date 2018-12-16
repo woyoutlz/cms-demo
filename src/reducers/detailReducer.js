@@ -7,11 +7,13 @@ let initialState = {
 };
 
 export default (state = initialState, action)=>{
-    switch (action.type){
-        case Type.GET_FORM:
-            return Object.assign({}, initialState, action.payload)
-        default:
-            return state;
-    }
+  switch (action.type){
+    case Type.GET_FORM:
+      return Object.assign({}, initialState, action.payload)
+    case Type.GET_TEMPLATE_DETAIL:
+      return Object.assign({}, initialState, action.payload)
+    default:
+      return state;
+  }
 }
 

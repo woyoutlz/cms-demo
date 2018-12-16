@@ -45,9 +45,11 @@ class Project extends React.Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <Link to={`/projects/edit/${record.templateId}`}>edit</Link>
-          <a href="javascript:;" onClick={this.delLottery.bind(this, record.templateId)}>删除</a>
+          <Link to={`/projects/editTemplate/${record.templateId}`}>edit</Link>
           <Divider type="vertical" />
+          <a href='javascript:;' onClick={
+            this.sendMsg.bind(this, record.templateId)
+          }>send</a>
         </span>
       ),
     }];
@@ -79,7 +81,19 @@ class Project extends React.Component {
   delLottery = (id) => {
   //  this.props.actions.delLotteryByLotteryId(id);
   }
-
+  sendMsg = (templateId) => {
+    console.log(templateId, 'tid') 
+    fetchJson({
+      success: (res) => {
+        console.log(res);       
+      },
+      data: {
+        templateId
+      },
+      type: 'POST',
+      url: '/lotteryForAdmin/remindUsers'
+    })
+  }
   test4 = () => {
     fetchJson({
       success: (res) => {
@@ -124,6 +138,9 @@ class Project extends React.Component {
 
   render() {
     const data = this.props.data;
+    data.map((e, i)=>{
+      e.key = i;
+    })
     return (
       <Content>
       <div className="page-in">
@@ -151,7 +168,7 @@ class Project extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    ...state.templateListReducer
+    ...state.templateReducer
   }
 }
 function mapDispatchToProps(dispatch) {

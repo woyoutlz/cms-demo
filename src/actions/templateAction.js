@@ -151,79 +151,48 @@ export const editLottery = (values) => {
 }
 
 export const delLotteryByLotteryId = (id) => {
-    return dispatch => {
-        fetchJson({
-            success: (res) => {
-                console.log('delLottery', res);
-            },
-            type: 'POST',
-            url: '/lotteryForAdmin/deleteLottery',
-            data: {
-                lotteryId: id
-            },
-        });
-    }
+  return dispatch => {
+    fetchJson({
+      success: (res) => {
+        console.log('delLottery', res);
+      },
+      type: 'POST',
+      url: '/lotteryForAdmin/deleteLottery',
+      data: {
+        lotteryId: id
+      },
+    });
+  }
 }
 
-export const createLottery = (values) => {
-    return dispatch => {
-        fetchJson({
-            success: (res) => {
-                console.log('createLottery', res);
-                // console.log(2, res)
-                // const data = res.result.data || [];
-                // const newData = data.filter((e) => e.id == params.id);
-                // dispatch({
-                //     type: Type.GET_FORM,
-                //     payload: { data: newData }
-                // })
-            },
-            type: 'POST',
-            url: '/lotteryForAdmin/add',
-            data: values,
-            // data: {
-            //     token: window.sessionStorage.getItem('token'),
-            //     data: {
-            //         query: {
-            //             id: params.id
-            //         }
-            //     }
-            // }
-        });
-    }
+export const createTemplate = (values) => {
+  return dispatch => {
+    fetchJson({
+      success: (res) => {
+        console.log('createLottery', res);
+      },
+      type: 'POST',
+      url: '/lotteryForAdmin/template/edit',
+      data: values,
+    });
+  }
 }
-export function getLotteryDetail(id) {
-
-    if (!id) {
-        return
-    }
-    return dispatch => {
-        fetchJson({
-            success: (res) => {
-                console.log(res, 'resres');
-                // console.log(2, res)
-                // const data = res.result.data || [];
-                // const newData = data.filter((e) => e.id == params.id);
-                dispatch({
-                    type: Type.GET_FORM,
-                    payload: res
-                });
-                dispatch({
-                    type: Type.UPLOADIMGARRAY,
-                    payload: res.data.detailImg
-                })
-            },
-            type: 'POST',
-            url: '/lotteryForAdmin/detail/'+id,
-            // data: {
-            //     token: window.sessionStorage.getItem('token'),
-            //     data: {
-            //         query: {
-            //             id: params.id
-            //         }
-            //     }
-            // }
-        })
-    }
+export function getTemplateDetail(id) {
+  return dispatch => {
+    fetchJson({
+      success: (res) => {
+        console.log(res, 'resres');
+        dispatch({
+          type: Type.GET_TEMPLATE_DETAIL,
+          payload: res
+        });
+      },
+      data:{
+        templateId: id
+      },
+      type: 'POST',
+      url: '/lotteryForAdmin/template/detail',
+    })
+  }
 }
 

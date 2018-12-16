@@ -8,11 +8,11 @@ let initialState = {
 };
 
 export default (state = initialState, action)=>{
-    switch (action.type){
-        case Type.GET_TEMPLATE_LIST:
-            return Object.assign({}, initialState, action.payload)
-        default:
-            return state;
-    }
+  switch (action.type){
+    case Type.GET_TEMPLATE_LIST:
+      return Object.assign({}, initialState, action.payload)
+    default:
+      return state;
+  }
 }
 
