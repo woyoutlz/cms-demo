@@ -12,8 +12,9 @@ const Deomo = bundle(() => import('../Project/index'));
 // const Permission = bundle(() => import('../Permission/index'));
 // const UIShow = bundle(() => import('../UIShow/index'));
 const UserInfos = bundle(() => import('../UserInfos/index'));
+const EditTemplate = bundle(() => import('../templateInfo/EditModal/index'));
 const Edit = bundle(() => import('../EditModal/index'));
-// const UserList = bundle(() => import('../UserList/index'));
+const templateInfo = bundle(() => import('../templateInfo/index'));
 // const History = bundle(() => import('../History/index'));
 // const Trade = bundle(() => import('../Trade/index'));
 // const DragTable = bundle(() => import('../DragTable'));
@@ -54,10 +55,10 @@ class PageIn extends React.Component {
             <Menu.Item key="/userInfos">
               <Link to="/projects/userInfos">用户信息</Link>
             </Menu.Item>
-            {/*<Menu.Item key="/permission">
-              <Link to="/projects/permission" >permission</Link>
+            <Menu.Item key="/templateList">
+              <Link to="/projects/templateList" >模版</Link>
             </Menu.Item>
-            <Menu.Item key="/show">
+            {/*<Menu.Item key="/show">
               <Link to="/projects/show" >展示</Link>
             </Menu.Item>
             <Menu.Item key="/history">
@@ -84,6 +85,9 @@ class PageIn extends React.Component {
               {/*<Route exact={true} path="/projects/userlist/:id" component={UserList} />*/}
               {/*<Route exact={true} path="/projects/projects" component={DragTable} />*/}
               <Route exact={true} path="/projects/add" component={Edit} />
+              <Route exact={true} path="/projects/templateList" component={templateInfo} />
+              <Route exact={true} path="/projects/addTemplate" component={EditTemplate} />
+              <Route exact={true} path="/projects/editTemplate/:id" component={EditTemplate} />
               {/*<Route exact={true} path="/projects/copy/:copy_from" component={Edit} />*/}
             </div>
           </Content>

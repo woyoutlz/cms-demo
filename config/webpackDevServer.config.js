@@ -91,8 +91,18 @@ module.exports = function(proxy, allowedHost) {
             //     req.url = req.url.replace(/^\/api/, '');
             // },
             changeOrigin: true
+        },
+        '/api/**': {
+            target: 'http://127.0.0.1:3000',
+            
+            // target: 'http://106.14.159.224:3049',
+            secure: false,
+            // rewrite: function(req) {
+            //     req.url = req.url.replace(/^\/api/, '');
+            // },
+            changeOrigin: true
         }
-    },
+},
     before(app) {
       // This lets us open files from the runtime error overlay.
       app.use(errorOverlayMiddleware());

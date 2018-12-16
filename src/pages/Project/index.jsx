@@ -156,26 +156,66 @@ class Project extends React.Component {
     this.props.actions.delLotteryByLotteryId(id);
   }
 
-  test = (num) => {
-    console.log(num);
-    num--
+  test4 = () => {
+    fetchJson({
+      success: (res) => {
+        console.log(res);       
+      },
+      type: 'GET',
+      url: '/api/profile/cashActions'
+    })
+  }
+test2 = () => {
+    fetchJson({
+      success: (res) => {
+        console.log(res);       
+      },
+      type: 'GET',
+      url: '/api/profile/lotteryCash'
+    })
+  }
+test3 = () => {
+    fetchJson({
+      success: (res) => {
+        console.log(res);       
+      },
+      type: 'POST',
+      data: {
+        lotteryId: 291
+      },
+      url: '/api/playCard/shareSuccessful'
+    })
+  }
+ test = () => {
 
-    if(num>0){
       fetchJson({
         success: (res) => {
           console.log(res);       
         },
-        type: 'POST',
-        url: '/lotteryForAdmin/list',
-        data: {
-          token: window.sessionStorage.getItem('token')
-        }
+        type: 'GET',
+        url: '/api/playCard/playCardStatus/291',
       })
-      setTimeout(()=>{
-        this.test.call(null, num)
-      },10);
-    }
   }
+ // test = (num) => {
+ //   console.log(num);
+ //   num--
+
+ //   if(num>0){
+ //     fetchJson({
+ //       success: (res) => {
+ //         console.log(res);       
+ //       },
+ //       type: 'POST',
+ //       url: '/lotteryForAdmin/list',
+ //       data: {
+ //         token: window.sessionStorage.getItem('token')
+ //       }
+ //     })
+ //     setTimeout(()=>{
+ //       this.test.call(null, num)
+ //     },10);
+ //   }
+ // }
 
   // change_show() {
   //   this.setState({
@@ -221,6 +261,27 @@ class Project extends React.Component {
               className="login-form-button" 
               onClick={this.createLottery}
             >Create</Button>
+            <Button 
+              type="primary" 
+              htmlType="submit" 
+              className="login-form-button" 
+              onClick={this.test4}
+            >Test4</Button>
+
+<Button 
+              type="primary" 
+              htmlType="submit" 
+              className="login-form-button" 
+              onClick={this.test3}
+            >Test3</Button>
+
+      <Button 
+              type="primary" 
+              htmlType="submit" 
+              className="login-form-button" 
+              onClick={this.test2}
+            >Test2</Button>
+
             <Button 
               type="primary" 
               htmlType="submit" 
