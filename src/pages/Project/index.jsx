@@ -29,6 +29,10 @@ class Project extends React.Component {
       dataIndex: 'name',
       key: 'name',
     }, {
+      title: '价格',
+      dataIndex: 'originPrice',
+      key: 'originPrice',
+    }, {
       title: 'ID',
       dataIndex: 'lotteryId',
       key: 'lotteryId',

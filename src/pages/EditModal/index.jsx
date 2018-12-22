@@ -204,6 +204,7 @@ class RegistrationForm extends React.Component {
       touchPaste,
       rewardDesc,
 			rewardImgDesc,
+      originPrice,
       templateId,
       value1,
       value2,
@@ -273,8 +274,7 @@ class RegistrationForm extends React.Component {
 	}
     return (
       <Form onSubmit={this.handleSubmit}>
-        
-        <FormItem
+       <FormItem
           label="奖品名称"
           {...formItemLayout}
         >
@@ -285,6 +285,20 @@ class RegistrationForm extends React.Component {
           initialValue: name
         })(
           <Input placeholder="name" />
+        )}
+        </FormItem>
+ 
+        <FormItem
+          label="originPrice"
+          {...formItemLayout}
+        >
+        {getFieldDecorator('originPrice', {
+          rules: [{
+            required: false, message: 'Please input name',
+          }],
+          initialValue: originPrice
+        })(
+          <Input placeholder="originPrice" type="number"  />
         )}
         </FormItem>
 
